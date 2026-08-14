@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PostCard } from '../../postCultura/components/postCard/PostCard';
 import { usePosts } from '../../postCultura/hooks/usePosts';
 
+
 type FeedTab = 'descubrir' | 'siguiendo';
 
 export function Feed() {
