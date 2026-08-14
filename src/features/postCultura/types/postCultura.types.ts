@@ -1,4 +1,4 @@
-export type TipoPost = "foro" | "reunion" | "colaboracion" | "donacion";
+import type { TipoPost } from "../schema/post.schema";
 
 interface PostCulturaBase {
   _id: string;
