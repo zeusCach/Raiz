@@ -1,75 +1,52 @@
-# React + TypeScript + Vite
+# 🌱 Raíz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Una plataforma social para la cultura y el medio ambiente.**
 
-Currently, two official plugins are available:
+Raíz nace como un espacio digital pensado para conectar a las personas con su comunidad, su entorno y sus raíces culturales. A través de publicaciones, foros, reuniones, colaboraciones y donaciones, buscamos fortalecer los lazos entre quienes quieren cuidar la cultura y el medio ambiente de su región.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> Proyecto en desarrollo activo (MVP).
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🌾 ¿Qué es Raíz?
 
-## Expanding the ESLint configuration
+Raíz es una red social enfocada en **cultura y medio ambiente**, donde cualquier persona puede compartir iniciativas, convocar a la comunidad o pedir apoyo para proyectos que impacten positivamente su entorno.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+En lugar de una publicación genérica, Raíz gira en torno a **PostCultura**: una unidad de contenido flexible que se adapta a distintos tipos de participación comunitaria.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧩 Tipos de publicación (PostCultura)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Tipo | Propósito |
+|---|---|
+| 🗣️ **Foro** | Abrir una conversación o debate sobre un tema cultural o ambiental |
+| 📅 **Reunión** | Convocar a un encuentro presencial o virtual |
+| 🤝 **Colaboración** | Buscar personas que se sumen a un proyecto |
+| 💚 **Donación** | Solicitar apoyo económico o en especie para una causa |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Cada publicación permite un contacto directo vía **WhatsApp**, facilitando que la organización y el apoyo pasen del espacio digital a la acción real.
 
-```
+## 🎨 Identidad visual
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Raíz tiene una estética cálida y con identidad propia, inspirada en la tierra y la cultura local:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Verde** `#1F4D3A` — naturaleza y crecimiento
+- **Arcilla** `#A6572D` — raíz y tierra
+- **Ocre** `#C9962C` — calidez y tradición
+- **Papel** `#EFE6D8` — fondo cálido y natural
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Tipografía:** títulos en *Fraunces* (serif, con carácter) y texto en *Inter* (limpio y legible).
 
-```
+## 🛠️ Stack tecnológico
+
+- **Frontend:** React + Vite + TypeScript
+- **Backend:** Node.js + Express + TypeScript
+- **Base de datos:** MongoDB
+- **Hosting:** Vercel (frontend) · Render (backend) · Atlas (base de datos)
+
+## 🌍 Nuestra motivación
+
+Raíz busca ser un puente entre las personas y las causas que les importan: desde preservar tradiciones culturales hasta impulsar acciones ambientales en su comunidad. Creemos que la tecnología puede ayudar a que las iniciativas locales encuentren a las personas correctas para crecer.
+
+---
+
+**Estado del proyecto:** 🚧 MVP en desarrollo activo
