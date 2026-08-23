@@ -16,4 +16,12 @@ export const registroSchema = z
     path: ['confirmPassword'],
   });
 
+
+  export const loginSchema = z.object({
+    email: z.email("Ingresa un correo correcto"),
+    password: z.string().min(1, "Ingresa tu contraseña"),
+    remember: z.boolean().default(false),
+  })
+
 export type RegistroFormData = z.infer<typeof registroSchema>;
+export type LoginFormData = z.infer<typeof loginSchema>
