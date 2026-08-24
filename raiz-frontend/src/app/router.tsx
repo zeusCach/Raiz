@@ -4,6 +4,7 @@ import { PostDetailPage } from '../features/postCultura/page/PostDetailPage';
 import { AppLayout } from './AppLayout';
 import { PostForm } from '../features/postCultura/components/postCard/PostFrom';
 import { RegistroPage } from '../features/auth/page/RegisterPage';
+import { LoginPage } from '../features/auth/page/LoginPage';
 
 
 export const router = createBrowserRouter([
@@ -19,4 +20,5 @@ export const router = createBrowserRouter([
     ],
   },
   { path: 'registro', element: <RegistroPage /> },
+  {path: 'login', element: <LoginPage/>}
 ]);
