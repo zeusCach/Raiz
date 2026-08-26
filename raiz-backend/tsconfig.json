@@ -2,12 +2,21 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "commonjs",
+<<<<<<< HEAD
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+=======
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+>>>>>>> origin/develop
     "resolveJsonModule": true
   },
   "include": ["src/**/*"]
