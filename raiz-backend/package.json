@@ -4,12 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-=======
->>>>>>> origin/develop
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,17 +17,14 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.9.3"
+    "mongoose": "^9.9.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/mongoose": "^5.10.5",
     "@types/node": "^26.2.0",
     "ts-node-dev": "^2.0.0",
-<<<<<<< HEAD
     "typescript": "^6.0.3"
-=======
-    "typescript": "^7.0.2"
->>>>>>> origin/develop
   }
 }
