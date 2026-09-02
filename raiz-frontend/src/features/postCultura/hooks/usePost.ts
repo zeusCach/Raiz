@@ -4,7 +4,7 @@ import { fetchPostById } from '../services/postCultura.api';
 import { getStoredPosts } from '../data/postsStore';  // 👈 cambia el import
 import type { PostCultura } from '../types/postCultura.types';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 export function usePost(id: string | undefined) {
   const [post, setPost] = useState<PostCultura | null>(null);
