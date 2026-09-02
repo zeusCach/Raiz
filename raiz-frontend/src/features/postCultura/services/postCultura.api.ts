@@ -1,9 +1,9 @@
-import type { CrearPostCulturaPayload, PostCultura, TipoPost } from "../types/postCultura.types";
+import type { CrearPostCulturaPayload, PostCultura } from "../types/postCultura.types";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export async function fetchPosts(tipo?: TipoPost): Promise<PostCultura[]> {
+export async function fetchPosts(tipo?: string): Promise<PostCultura[]> {
   const url = tipo ? `${API_URL}/posts?tipo=${tipo}` : `${API_URL}/posts`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Error al obtener los posts');
@@ -20,7 +20,6 @@ export async function createPost(payload: CrearPostCulturaPayload): Promise<Post
   const res = await fetch(`${API_URL}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error('Error al crear el post');

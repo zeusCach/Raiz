@@ -1,10 +1,10 @@
 // features/postCultura/hooks/usePost.ts
 import { useState, useEffect, useCallback } from 'react';
 import { fetchPostById } from '../services/postCultura.api';
-import { mockPosts } from '../data/mockPosts';
+import { getStoredPosts } from '../data/postsStore';  // 👈 cambia el import
 import type { PostCultura } from '../types/postCultura.types';
 
-const USE_MOCK = true; // misma bandera que en usePosts
+const USE_MOCK = false;
 
 export function usePost(id: string | undefined) {
   const [post, setPost] = useState<PostCultura | null>(null);
@@ -21,7 +21,7 @@ export function usePost(id: string | undefined) {
     try {
       if (USE_MOCK) {
         await new Promise((r) => setTimeout(r, 300));
-        const encontrado = mockPosts.find((p) => p._id === id) ?? null;
+        const encontrado = getStoredPosts().find((p) => p._id === id) ?? null;  // 👈 cambia esta línea
         setPost(encontrado);
       } else {
         const data = await fetchPostById(id);
