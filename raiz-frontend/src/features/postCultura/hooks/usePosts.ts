@@ -4,7 +4,7 @@ import { mockPosts } from '../data/mockPosts';
 import type { PostCultura } from '../types/postCultura.types';
 import type { TipoPost } from '../schema/post.schema';
 
-const USE_MOCK = true; // cambia a false cuando tengas el backend listo
+const USE_MOCK = false; // cambia a false cuando tengas el backend listo
 
 export function usePosts(tipo?: TipoPost) {
   const [posts, setPosts] = useState<PostCultura[]>([]);

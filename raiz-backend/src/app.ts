@@ -2,6 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import { env } from './shared/config/env';
+import { errorHandler } from './shared/middlewares/errorHandler';
+import router from './features/postCultura/postCultura.routes';
 
 const app = express();
 
@@ -12,5 +14,8 @@ app.get('/api/health', (_req, res) => {
     res.json({status: 'ok'});
 });
 
+app.use('/api/posts', router);
+
+app.use(errorHandler);
 
 export default app;
