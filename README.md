@@ -1,4 +1,4 @@
-# 🌱 Raíz
+#🌱 Raíz
 
 **Una plataforma social para la cultura y el medio ambiente.**
 
