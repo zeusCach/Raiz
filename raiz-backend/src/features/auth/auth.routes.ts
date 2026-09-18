@@ -2,12 +2,12 @@ import { Router } from "express";
 import * as authController from './auth.controller';
 // import { requireAuth } from "./auth.middleware";
 
-const router = Router();
+const authRouter = Router();
 
 
-router.post('registro', authController.registro);
-router.post('login', authController.login);
-router.post('logout', authController.logout)
+authRouter.post('registro', authController.registro);
+authRouter.post('login', authController.login);
+authRouter.post('logout', authController.logout)
 // router.get('me', requireAuth, authController.me)
 
-export default router;
+export default authRouter;
