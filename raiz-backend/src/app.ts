@@ -4,17 +4,22 @@ import cors from 'cors';
 import { env } from './shared/config/env';
 import { errorHandler } from './shared/middlewares/errorHandler';
 import router from './features/postCultura/postCultura.routes';
+import authRouter from './features/auth/auth.routes';
+import cookieParser from 'cookie-parser';
+
 
 const app = express();
 
-app.use(cors({origin: env.clientUrl}));
+app.use(cors({ origin: env.clientUrl, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.get('/api/health', (_req, res) => {
     res.json({status: 'ok'});
 });
 
 app.use('/api/posts', router);
+app.use('/api/auth', authRouter);
 
 app.use(errorHandler);
 

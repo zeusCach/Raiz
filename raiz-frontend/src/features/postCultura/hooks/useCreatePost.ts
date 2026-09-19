@@ -2,10 +2,11 @@ import { useState, useCallback } from 'react';
 import { createPost } from '../services/postCultura.api';
 import { addStoredPost } from '../data/postsStore';
 import type { CrearPostCulturaPayload, PostCultura } from '../types/postCultura.types';
+import { useAuthStore } from '../../auth/store/authStore';
 
 const USE_MOCK = false;
 
-// Autor temporal mientras no existe auth real — reemplazar cuando haya sesión de usuario
+// Autor de respaldo, en caos que authenticacion falle
 const AUTOR_MOCK = {
   _id: '000000000000000000000001',
   nombre: 'Usuario Raíz',
@@ -15,6 +16,7 @@ const AUTOR_MOCK = {
 export function useCreatePost() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const user = useAuthStore((state) => state.user);
 
   const crearPost = useCallback(
     async (payload: CrearPostCulturaPayload): Promise<PostCultura | null> => {
@@ -24,7 +26,8 @@ export function useCreatePost() {
 
     try {
       
-      const payloadAutor = { ...payload, autor: AUTOR_MOCK };
+      const autor = user ? {_id: user._id, nombre: user.nombre} : AUTOR_MOCK;
+      const payloadAutor = {...payload, autor};
 
       if (USE_MOCK) {
         await new Promise((r) => setTimeout(r, 300));
@@ -37,7 +40,7 @@ export function useCreatePost() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   return { crearPost, loading, error };
 }

@@ -1,9 +1,14 @@
 // features/auth/components/LoginForm.tsx
+import { useNavigate } from 'react-router-dom';
 import { useLoginForm } from '../hooks/useLoginForm';
 import { Field, inputClass } from './FormField';
 
 export function LoginForm() {
-  const { values, errors, isSubmitting, handleChange, handleSubmit } = useLoginForm();
+  
+  const navigate = useNavigate();
+  const { values, errors, isSubmitting, handleChange, handleSubmit } = useLoginForm(() => {
+    navigate('/feed')
+  });
 
   return (
     <>
