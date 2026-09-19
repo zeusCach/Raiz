@@ -1,12 +1,14 @@
 // features/auth/hooks/useLoginForm.ts
-import { useState } from 'react';
-import { loginSchema, type LoginFormData } from '../schema/auth.schema';
+import { useState } from "react";
+import { loginSchema, type LoginFormData } from "../schema/auth.schema";
+import { useAuthStore } from "../store/authStore";
+import { loginUsuario } from "../services/auth.services";
 
 type LoginFormErrors = Partial<Record<keyof LoginFormData, string>>;
 
 const initialValues: LoginFormData = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   remember: false,
 };
 
@@ -36,10 +38,20 @@ export function useLoginForm(onSuccess?: (data: LoginFormData) => void) {
 
     setIsSubmitting(true);
     // TODO: reemplazar por la llamada real de auth cuando exista
-    console.log('Login (visual-only):', result.data);
-    await new Promise((r) => setTimeout(r, 600));
-    setIsSubmitting(false);
-    onSuccess?.(result.data);
+    try {
+      const user = await loginUsuario(result.data);
+      useAuthStore.getState().setUser(user);
+      onSuccess?.(result.data);
+    } catch (err) {
+      setErrors({
+        email:
+          err instanceof Error
+            ? err.message
+            : "Correo o contraseña incorrectos",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return { values, errors, isSubmitting, handleChange, handleSubmit };
