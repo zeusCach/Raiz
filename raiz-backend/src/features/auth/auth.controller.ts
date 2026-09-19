@@ -12,8 +12,8 @@ export async function registro(req: Request, res: Response, next: NextFunction) 
 
     try {
         // Capturamos los valores enviados por el cliente pra registro
-        const {nombre, email, password} = req.body;
-        const {user, token} = await authService.registrarUsuario(nombre, email, password);
+        const {nombreCompleto, email, password} = req.body;
+        const {user, token} = await authService.registrarUsuario(nombreCompleto, email, password);
 
         //permite que el navegador conserve las credenciales de autenticacion
         res.cookie('token', token, COOKIE_OPTIONS);

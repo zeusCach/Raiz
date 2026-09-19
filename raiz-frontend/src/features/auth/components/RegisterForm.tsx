@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { useRegistroForm } from "../hooks/useRegisterForm";
 import { Field, inputClass } from './FormField';
 
-
 export function RegisterForm() {
-  const { values, errors, isSubmitting, handleChange, handleSubmit } = useRegistroForm();
+
+  const navigate = useNavigate();
+  const { values, errors, isSubmitting, handleChange, handleSubmit } = useRegistroForm(() => {
+    navigate('/feed')
+  });
 
   return (
     <>

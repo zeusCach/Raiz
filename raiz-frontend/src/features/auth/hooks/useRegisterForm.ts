@@ -1,15 +1,15 @@
-
-import { useState } from 'react';
-import { registroSchema, type RegistroFormData } from '../schema/auth.schema';
-
+import { useState } from "react";
+import { registroSchema, type RegistroFormData } from "../schema/auth.schema";
+import { registrarUsuario } from "../services/auth.services";
+import { useAuthStore } from "../store/authStore";
 
 type RegistroFormErrors = Partial<Record<keyof RegistroFormData, string>>;
 
 const initialValues: RegistroFormData = {
-  nombreCompleto: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  nombreCompleto: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
   aceptaTerminos: false,
 };
 
@@ -18,7 +18,10 @@ export function useRegistroForm(onSuccess?: (data: RegistroFormData) => void) {
   const [errors, setErrors] = useState<RegistroFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleChange(field: keyof RegistroFormData, value: string | boolean) {
+  function handleChange(
+    field: keyof RegistroFormData,
+    value: string | boolean,
+  ) {
     setValues((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   }
@@ -40,10 +43,17 @@ export function useRegistroForm(onSuccess?: (data: RegistroFormData) => void) {
     setIsSubmitting(true);
     // TODO: cuando exista auth real, reemplazar por la llamada al backend
     // (ej. useAuth().registrar(result.data)) — visual-only por ahora
-    console.log('Registro (visual-only):', result.data);
-    await new Promise((r) => setTimeout(r, 600));
-    setIsSubmitting(false);
-    onSuccess?.(result.data);
+    try {
+      const user = await registrarUsuario(result.data);
+      useAuthStore.getState().setUser(user);
+      onSuccess?.(result.data);
+    } catch (err) {
+      setErrors({
+        email: err instanceof Error ? err.message : "Error al registrarse",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return { values, errors, isSubmitting, handleChange, handleSubmit };
