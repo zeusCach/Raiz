@@ -1,6 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../features/auth/store/authStore";
+import { logoutUsuario } from "../../features/auth/services/auth.services";
 
 export function Navbar() {
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logoutUsuario();
+    setUser(null);
+    navigate('/feed');
+  }
+
   return (
     <header className="flex items-center justify-between border-b border-arcilla bg-papel px-8 py-4">
       <Link to="/feed" className="flex items-center gap-2">
@@ -16,7 +28,21 @@ export function Navbar() {
         />
       </div>
 
-      <div className="flex items-center gap-3">
+
+      { user ? (
+        <div className="flex items-center gap-3">
+          <span className="font-body text-sm text-tinta/80">
+            Hola, {user.nombre.split(' ')[0]}
+          </span>
+          <button
+            onClick={handleLogout}
+            className="rounded-full border border-arcilla px-4 py-2 text-sm font-medium text-tinta hover:bg-arcilla/30"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+      ) : (
+        <div className="flex items-center gap-3">
         <Link
           to="/login"
           className="rounded-full border border-arcilla px-4 py-2 text-sm font-medium text-tinta hover:bg-arcilla/30"
@@ -30,6 +56,7 @@ export function Navbar() {
           Registrarse
         </Link>
       </div>
+      )}
     </header>
   );
 }
