@@ -9,7 +9,7 @@ import authRouter from './features/auth/auth.routes';
 
 const app = express();
 
-app.use(cors({origin: env.clientUrl}));
+app.use(cors({ origin: env.clientUrl, credentials: true }));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
