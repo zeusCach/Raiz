@@ -11,7 +11,7 @@ export function AppLayout() {
   const setLoaging = useAuthStore((state) => state.setLoading);
 
   useEffect(()=> {
-    fetchUsuarioActual().then(setUser).finally(() => setLoaging)
+    fetchUsuarioActual().then(setUser).finally(() => setLoaging(false))
   },[setUser, setLoaging]);
   
   return (
