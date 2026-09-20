@@ -65,8 +65,14 @@ export async function createPost(
   next: NextFunction
 ) {
   try {
+
+    const autor = {
+      _id: req.user!._id,
+      nombre: req.user!.nombre
+    };
+    
     // Obtiene los datos enviados en el body de la petición.
-    const post = await postCulturaService.createPost(req.body);
+    const post = await postCulturaService.createPost({...req.body, autor});
 
     // Devuelve el post creado con código HTTP 201.
     res.status(201).json(post);

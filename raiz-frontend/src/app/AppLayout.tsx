@@ -8,10 +8,11 @@ import { fetchUsuarioActual } from '../features/auth/services/auth.services';
 
 export function AppLayout() {
   const setUser = useAuthStore((state) => state.setUser);
+  const setLoaging = useAuthStore((state) => state.setLoading);
 
   useEffect(()=> {
-    fetchUsuarioActual().then(setUser);
-  },[setUser]);
+    fetchUsuarioActual().then(setUser).finally(() => setLoaging(false))
+  },[setUser, setLoaging]);
   
   return (
     <div className="flex min-h-screen flex-col bg-papel font-body">

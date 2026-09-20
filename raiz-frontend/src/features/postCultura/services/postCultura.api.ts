@@ -20,6 +20,7 @@ export async function createPost(payload: CrearPostCulturaPayload): Promise<Post
   const res = await fetch(`${API_URL}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error('Error al crear el post');
