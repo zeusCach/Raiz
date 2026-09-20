@@ -1,13 +1,25 @@
-import { useState } from 'react';
+// features/feed/components/Feed.tsx
+import { useMemo, useState } from 'react';
 import { PostCard } from '../../postCultura/components/postCard/PostCard';
 import { usePosts } from '../../postCultura/hooks/usePosts';
-
+import { useSearchStore } from '../store/searchStore';
 
 type FeedTab = 'descubrir' | 'siguiendo';
 
 export function Feed() {
   const [tab, setTab] = useState<FeedTab>('descubrir');
   const { posts, loading, error } = usePosts();
+  const query = useSearchStore((state) => state.query);
+
+  const postsFiltrados = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return posts;
+    return posts.filter(
+      (post) =>
+        post.titulo.toLowerCase().includes(q) ||
+        post.descripcion.toLowerCase().includes(q)
+    );
+  }, [posts, query]);
 
   return (
     <main className="flex-1 px-8 py-6">
@@ -47,14 +59,16 @@ export function Feed() {
         </div>
       )}
 
-      {!loading && !error && posts.length === 0 && (
+      {!loading && !error && postsFiltrados.length === 0 && (
         <div className="rounded-xl border border-arcilla bg-white/40 px-4 py-8 text-center text-tinta/50">
-          Todavía no hay publicaciones. Sé la primera persona en compartir algo.
+          {query
+            ? `No se encontraron publicaciones para "${query}".`
+            : 'Todavía no hay publicaciones. Sé la primera persona en compartir algo.'}
         </div>
       )}
 
       <div className="flex flex-col gap-4">
-        {posts.map((post) => (
+        {postsFiltrados.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>
