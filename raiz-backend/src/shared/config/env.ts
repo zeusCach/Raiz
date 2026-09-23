@@ -15,7 +15,7 @@ function requireEnv(key: string): string {
 export const env = {
   port: process.env.PORT || 3000,
   mongoUri: requireEnv('MONGO_URI'),
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: process.env.CLIENT_URL || 'http://192.168.2.6:5173',
   jwtSecret: requireEnv('JWT_SECRET'),
 };
 

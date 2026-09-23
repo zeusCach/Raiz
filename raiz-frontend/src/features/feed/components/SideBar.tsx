@@ -18,7 +18,7 @@ export function Sidebar() {
   const [activo, setActivo] = useState('inicio');
 
   return (
-    <aside className="flex w-56 flex-col justify-between border-r border-arcilla bg-papel px-3 py-6">
+    <aside className="hidden w-56 flex-col justify-between border-r border-arcilla bg-papel px-3 py-6 md:flex">
       <nav className="flex flex-col gap-1">
         {NAV_ITEMS.map((item) => (
           <button

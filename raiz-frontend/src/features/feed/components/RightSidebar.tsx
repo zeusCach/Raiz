@@ -6,7 +6,7 @@ export function RightSidebar() {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <aside className="flex w-72 flex-col gap-4 p-6">
+    <aside className="hidden w-72 flex-col gap-4 p-6 lg:flex">
       <div className="rounded-2xl border border-arcilla bg-white/60 p-5">
         <h3 className="font-display text-lg font-semibold text-tinta">Comparte algo</h3>
         <p className="mt-1 text-sm text-tinta/60">
