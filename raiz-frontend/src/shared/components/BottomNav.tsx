@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
+import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
 import { MoreMenu } from './MoreMenu';
+import type { TipoPost } from '../../features/postCultura/schema/post.schema';
 
-const NAV_ITEMS = [
-  { icon: '🏠', label: 'Inicio', key: 'inicio' },
-  { icon: '💬', label: 'Foro', key: 'foro' },
-  { icon: '🤝', label: 'Reuniones', key: 'reuniones' },
+const NAV_ITEMS: { icon: string; label: string; key: string; tipo: TipoPost | null }[] = [
+  { icon: '🏠', label: 'Inicio', key: 'inicio', tipo: null },
+  { icon: '💬', label: 'Foro', key: 'foro', tipo: 'foro' },
+  { icon: '🤝', label: 'Reuniones', key: 'reuniones', tipo: 'reunion' },
 ];
 
 export function BottomNav() {
-  const [activo, setActivo] = useState('inicio');
+  const tipoActivo = useCategoryFilterStore((state) => state.tipo);
+  const setTipo = useCategoryFilterStore((state) => state.setTipo);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const visible = useScrollDirection();
 
@@ -27,11 +30,11 @@ export function BottomNav() {
           <button
             key={item.key}
             onClick={() => {
-              setActivo(item.key);
+              setTipo(item.tipo);
               setMenuAbierto(false);
             }}
             className={`flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1.5 text-xs font-medium transition ${
-              activo === item.key ? 'text-verde' : 'text-tinta/50'
+              tipoActivo === item.tipo ? 'text-verde' : 'text-tinta/50'
             }`}
           >
             <span className="text-xl">{item.icon}</span>
