@@ -4,12 +4,14 @@ import { PostCard } from "../../postCultura/components/postCard/PostCard";
 import { usePosts } from "../../postCultura/hooks/usePosts";
 import { useSearchStore } from "../store/searchStore";
 import { CreatePostPrompt } from "../../postCultura/components/postCard/CreatePostPrompt";
+import { useCategoryFilterStore } from "../store/categoryFilterStore";
 
 type FeedTab = "descubrir" | "siguiendo";
 
 export function Feed() {
   const [tab, setTab] = useState<FeedTab>("descubrir");
-  const { posts, loading, error } = usePosts();
+  const tipoFiltro = useCategoryFilterStore((state) => state.tipo);
+  const { posts, loading, error } = usePosts(tipoFiltro ?? undefined);
   const query = useSearchStore((state) => state.query);
 
   const postsFiltrados = useMemo(() => {

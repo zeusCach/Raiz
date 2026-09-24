@@ -1,21 +1,23 @@
-import { useState } from 'react';
+import { useCategoryFilterStore } from '../store/categoryFilterStore';
+import type { TipoPost } from '../../postCultura/schema/post.schema';
 
-const NAV_ITEMS = [
-  { icon: '🏠', label: 'Inicio', key: 'inicio' },
-  { icon: '💬', label: 'Foro', key: 'foro' },
-  { icon: '🤝', label: 'Reuniones', key: 'reuniones' },
-  { icon: '✋', label: 'Colaboraciones', key: 'colaboraciones' },
-  { icon: '🌾', label: 'Donaciones', key: 'donaciones' },
-  { icon: '📌', label: 'Guardados', key: 'guardados' },
+const NAV_ITEMS: { icon: string; label: string; key: string; tipo: TipoPost | null }[] = [
+  { icon: '🏠', label: 'Inicio', key: 'inicio', tipo: null },
+  { icon: '💬', label: 'Foro', key: 'foro', tipo: 'foro' },
+  { icon: '🤝', label: 'Reuniones', key: 'reuniones', tipo: 'reunion' },
+  { icon: '✋', label: 'Colaboraciones', key: 'colaboraciones', tipo: 'colaboracion' },
+  { icon: '🌾', label: 'Donaciones', key: 'donaciones', tipo: 'donacion' },
 ];
 
 const OTROS_ITEMS = [
+  { icon: '📌', label: 'Guardados', key: 'guardados' },
   { icon: '💚', label: 'Comunidad', key: 'comunidad' },
   { icon: '📖', label: 'Acerca de', key: 'acerca' },
 ];
 
 export function Sidebar() {
-  const [activo, setActivo] = useState('inicio');
+  const tipoActivo = useCategoryFilterStore((state) => state.tipo);
+  const setTipo = useCategoryFilterStore((state) => state.setTipo);
 
   return (
     <aside className="hidden w-56 flex-col justify-between border-r border-arcilla bg-papel px-3 py-6 md:flex">
@@ -23,9 +25,9 @@ export function Sidebar() {
         {NAV_ITEMS.map((item) => (
           <button
             key={item.key}
-            onClick={() => setActivo(item.key)}
+            onClick={() => setTipo(item.tipo)}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-              activo === item.key
+              tipoActivo === item.tipo
                 ? 'bg-verde text-papel'
                 : 'text-tinta/70 hover:bg-arcilla/40'
             }`}
@@ -44,10 +46,15 @@ export function Sidebar() {
           {OTROS_ITEMS.map((item) => (
             <button
               key={item.key}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/70 hover:bg-arcilla/40"
+              disabled
+              title="Próximamente"
+              className="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/30"
             >
-              <span>{item.icon}</span>
+              <span className="opacity-50">{item.icon}</span>
               {item.label}
+              <span className="ml-auto text-[10px] uppercase tracking-wide text-tinta/30">
+                Pronto
+              </span>
             </button>
           ))}
         </nav>
