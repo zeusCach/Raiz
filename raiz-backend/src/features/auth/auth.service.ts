@@ -60,3 +60,52 @@ export async function loginUsuario(email: string, password: string) {
 function generarToken(userId: string) {
     return jwt.sign({sub: userId}, env.jwtSecret, {expiresIn: TOKEN_EXPIRY});
 }
+
+
+export async function seguirUsuario(userId: string, targetId: string) {
+  //verificamos que el usuario no intente seguirse a sí mismo
+  if (userId === targetId) {
+    throw new Error('No puedes seguirte a ti mismo');
+  }
+
+  //buscamos al usuario que se quiere seguir
+  const target = await User.findById(targetId);
+
+  //si no existe el usuario se rechaza la acción
+  if (!target) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //agregamos al usuario a la lista de seguidos evitando duplicados
+  await User.findByIdAndUpdate(userId, { $addToSet: { siguiendo: targetId } });
+
+  //buscamos nuevamente al usuario para obtener la lista actualizada
+  const actualizado = await User.findById(userId);
+
+  //devolvemos los ids de los usuarios que sigue
+  return actualizado!.siguiendo.map((id) => id.toString());
+}
+
+export async function dejarDeSeguirUsuario(userId: string, targetId: string) {
+  //eliminamos al usuario de la lista de seguidos
+  await User.findByIdAndUpdate(userId, { $pull: { siguiendo: targetId } });
+
+  //buscamos nuevamente al usuario para obtener la lista actualizada
+  const actualizado = await User.findById(userId);
+
+  //devolvemos los ids de los usuarios que sigue
+  return actualizado!.siguiendo.map((id) => id.toString());
+}
+
+export async function obtenerPerfilPublico(id: string) {
+  //buscamos al usuario y obtenemos solamente sus datos públicos
+  const user = await User.findById(id).select('nombre createdAt');
+
+  //si no existe el usuario se rechaza la consulta
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //devolvemos los datos públicos del usuario
+  return user;
+}

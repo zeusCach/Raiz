@@ -2,15 +2,17 @@
 import { PostCultura } from './postCultura.model';
 
 // Obtiene los posts y permite filtrarlos por tipo.
-export async function getPosts(tipo?: string) {
+export async function getPosts(tipo?: string, autor?: string) {
+  //creamos un filtro vacío para buscar las publicaciones
+  const filter: Record<string, unknown> = {};
 
-  // Filtro vacío para obtener todos los posts.
-  const filter = tipo ? { tipo } : {};
-
-  // Si se recibe un tipo, se agrega al filtro.
+  //si se recibe un tipo, agregamos el tipo al filtro
   if (tipo) filter.tipo = tipo;
 
-  // Obtiene los posts ordenados del más reciente al más antiguo.
+  //si se recibe un autor, agregamos su id al filtro
+  if (autor) filter['autor._id'] = autor;
+
+  //buscamos las publicaciones y las ordenamos de la más reciente a la más antigua
   return PostCultura.find(filter).sort({ createdAt: -1 });
 }
 
