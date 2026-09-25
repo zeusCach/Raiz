@@ -6,6 +6,7 @@ import { PostForm } from '../features/postCultura/components/postCard/PostFrom';
 import { RegistroPage } from '../features/auth/page/RegisterPage';
 import { LoginPage } from '../features/auth/page/LoginPage';
 import { ProtectedRoute } from './protectedRoute';
+import { ProfilePage } from '../features/profile/page/ProfilePage';
 
 
 export const router = createBrowserRouter([
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { path: 'publicar', element: <ProtectedRoute>
         <PostForm /> 
       </ProtectedRoute>},
+      { path: 'perfil/:id', element: <ProfilePage /> },
     
     ],
   },
