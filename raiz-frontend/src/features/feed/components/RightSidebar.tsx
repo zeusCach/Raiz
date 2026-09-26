@@ -3,6 +3,7 @@ import { useAuthStore } from "../../auth/store/authStore";
 import { useTrendingPosts } from "../../postCultura/hooks/useTrendingPosts";
 import { useSugeridos } from "../../profile/hooks/useSugeridos";
 import { FollowButton } from "../../profile/components/FollowButton";
+import { FiTrendingUp, FiUsers } from "react-icons/fi";
 
 const TIPO_LABEL: Record<string, string> = {
   foro: "Foro",
@@ -43,44 +44,11 @@ export function RightSidebar() {
         )}
       </div>
 
-      <div className="rounded-2xl border border-arcilla bg-white/60 p-5">
-        <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-tinta">
-          <span>✨</span> En tendencia
-        </h3>
-
-        {loading && <p className="mt-2 text-sm text-tinta/50">Cargando...</p>}
-
-        {!loading && posts.length === 0 && (
-          <p className="mt-2 text-sm text-tinta/60">
-            Las publicaciones con más apoyo de la comunidad aparecerán aquí.
-          </p>
-        )}
-
-        {!loading && posts.length > 0 && (
-          <ul className="mt-3 flex flex-col gap-3">
-            {posts.map((post) => (
-              <li key={post._id}>
-                <Link
-                  to={`/post/${post._id}`}
-                  className="block rounded-lg px-2 py-1.5 -mx-2 transition hover:bg-arcilla/20"
-                >
-                  <span className="text-xs font-medium text-verde">
-                    {TIPO_LABEL[post.tipo]}
-                  </span>
-                  <p className="truncate text-sm font-medium text-tinta">
-                    {post.titulo}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {user && (
+       {user && (
         <div className="rounded-2xl border border-arcilla bg-white/60 p-5">
           <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-tinta">
-            <span>👥</span> Personas que podrías seguir
+            <FiUsers className="h-5 w-5 text-verde" /> Personas que podrías
+            seguir
           </h3>
 
           {cargandoSugeridos && (
@@ -118,6 +86,41 @@ export function RightSidebar() {
           )}
         </div>
       )}
+
+      <div className="rounded-2xl border border-arcilla bg-white/60 p-5">
+        <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-tinta">
+          <FiTrendingUp className="h-5 w-5 text-verde" /> En tendencia
+        </h3>
+
+        {loading && <p className="mt-2 text-sm text-tinta/50">Cargando...</p>}
+
+        {!loading && posts.length === 0 && (
+          <p className="mt-2 text-sm text-tinta/60">
+            Las publicaciones con más apoyo de la comunidad aparecerán aquí.
+          </p>
+        )}
+
+        {!loading && posts.length > 0 && (
+          <ul className="mt-3 flex flex-col gap-3">
+            {posts.map((post) => (
+              <li key={post._id}>
+                <Link
+                  to={`/post/${post._id}`}
+                  className="block rounded-lg px-2 py-1.5 -mx-2 transition hover:bg-arcilla/20"
+                >
+                  <span className="text-xs font-medium text-verde">
+                    {TIPO_LABEL[post.tipo]}
+                  </span>
+                  <p className="truncate text-sm font-medium text-tinta">
+                    {post.titulo}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
     </aside>
   );
 }

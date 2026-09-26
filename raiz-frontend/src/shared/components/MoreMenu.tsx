@@ -1,15 +1,51 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../features/auth/store/authStore';
-import { logoutUsuario } from '../../features/auth/services/auth.services';
-import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
-import type { TipoPost } from '../../features/postCultura/schema/post.schema';
+import { Link, useNavigate } from "react-router-dom";
+import { FaHandsHelping, FaHandHoldingHeart } from "react-icons/fa";
+import { FiBookmark, FiHeart, FiBookOpen } from "react-icons/fi";
+import { useAuthStore } from "../../features/auth/store/authStore";
+import { logoutUsuario } from "../../features/auth/services/auth.services";
+import { useCategoryFilterStore } from "../../features/feed/store/categoryFilterStore";
+import type { TipoPost } from "../../features/postCultura/schema/post.schema";
 
-const MORE_ITEMS: { icon: string; label: string; key: string; tipo: TipoPost | null; disabled?: boolean }[] = [
-  { icon: '✋', label: 'Colaboraciones', key: 'colaboraciones', tipo: 'colaboracion' },
-  { icon: '🌾', label: 'Donaciones', key: 'donaciones', tipo: 'donacion' },
-  { icon: '📌', label: 'Guardados', key: 'guardados', tipo: null, disabled: true },
-  { icon: '💚', label: 'Comunidad', key: 'comunidad', tipo: null, disabled: true },
-  { icon: '📖', label: 'Acerca de', key: 'acerca', tipo: null, disabled: true },
+const MORE_ITEMS: {
+  Icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  key: string;
+  tipo: TipoPost | null;
+  disabled?: boolean;
+}[] = [
+  {
+    Icon: FaHandsHelping,
+    label: "Colaboraciones",
+    key: "colaboraciones",
+    tipo: "colaboracion",
+  },
+  {
+    Icon: FaHandHoldingHeart,
+    label: "Donaciones",
+    key: "donaciones",
+    tipo: "donacion",
+  },
+  {
+    Icon: FiBookmark,
+    label: "Guardados",
+    key: "guardados",
+    tipo: null,
+    disabled: true,
+  },
+  {
+    Icon: FiHeart,
+    label: "Comunidad",
+    key: "comunidad",
+    tipo: null,
+    disabled: true,
+  },
+  {
+    Icon: FiBookOpen,
+    label: "Acerca de",
+    key: "acerca",
+    tipo: null,
+    disabled: true,
+  },
 ];
 
 interface MoreMenuProps {
@@ -26,7 +62,7 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
     await logoutUsuario();
     setUser(null);
     onClose();
-    navigate('/feed');
+    navigate("/feed");
   }
 
   function handleItemClick(item: (typeof MORE_ITEMS)[number]) {
@@ -49,14 +85,16 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
               key={item.key}
               onClick={() => handleItemClick(item)}
               disabled={item.disabled}
-              title={item.disabled ? 'Próximamente' : undefined}
+              title={item.disabled ? "Próximamente" : undefined}
               className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium ${
                 item.disabled
-                  ? 'cursor-not-allowed text-tinta/30'
-                  : 'text-tinta/70 hover:bg-arcilla/30'
+                  ? "cursor-not-allowed text-tinta/30"
+                  : "text-tinta/70 hover:bg-arcilla/30"
               }`}
             >
-              <span className={item.disabled ? 'text-xl opacity-50' : 'text-xl'}>{item.icon}</span>
+              <item.Icon
+                className={item.disabled ? "h-5 w-5 opacity-50" : "h-5 w-5"}
+              />
               {item.label}
             </button>
           ))}

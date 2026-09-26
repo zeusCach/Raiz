@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { WhatsAppButton } from "../../../whatsapp/components/whatsappButton";
 import type { PostCultura } from "../../types/postCultura.types";
 import { FollowButton } from "../../../profile/components/FollowButton";
+import { FiCalendar } from "react-icons/fi";
 
 const BADGE_STYLES: Record<PostCultura["tipo"], string> = {
   foro: "bg-[#8B7355]/10 text-[#8B7355]", // arcilla
@@ -47,8 +48,9 @@ export function PostCard({ post }: { post: PostCultura }) {
       <p className="mt-1 text-sm text-[#6B5F4E]">{post.descripcion}</p>
 
       {post.tipo === "reunion" && (
-        <p className="mt-3 text-sm text-[#4A6741]">
-          📅 {new Date(post.fecha).toLocaleDateString("es-MX")} · {post.hora} ·{" "}
+        <p className="mt-3 flex items-center gap-1.5 text-sm text-[#4A6741]">
+          <FiCalendar className="h-4 w-4" />
+          {new Date(post.fecha).toLocaleDateString("es-MX")} · {post.hora} ·{" "}
           {post.lugar}
         </p>
       )}
