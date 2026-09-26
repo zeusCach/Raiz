@@ -60,5 +60,5 @@ export function useProfile(id: string | undefined) {
   }, [cargar]);
 
   //devolvemos la información del perfil, sus publicaciones y los estados de carga y error
-  return { perfil, posts, loading, error };
+  return { perfil, posts, loading, error, refetch: cargar };
 }

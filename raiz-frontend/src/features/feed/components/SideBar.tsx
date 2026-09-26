@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '../../auth/store/authStore';
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../../auth/store/authStore";
 
 const OTROS_ITEMS = [
-  { icon: '📌', label: 'Guardados', key: 'guardados' },
-  { icon: '💚', label: 'Comunidad', key: 'comunidad' },
-  { icon: '📖', label: 'Acerca de', key: 'acerca' },
+  { icon: "📌", label: "Guardados", key: "guardados" },
+  { icon: "💚", label: "Comunidad", key: "comunidad" },
+  { icon: "📖", label: "Acerca de", key: "acerca" },
 ];
 
 export function Sidebar() {
@@ -15,25 +15,44 @@ export function Sidebar() {
       {user ? (
         <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
           <Link to={`/perfil/${user._id}`}>
-          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-verde/15 font-display text-2xl font-semibold text-verde">
-            {user.nombre.charAt(0).toUpperCase()}
-          </span>
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-verde/15 font-display text-2xl font-semibold text-verde">
+              {user.nombre.charAt(0).toUpperCase()}
+            </span>
           </Link>
           <h2 className="mt-3 font-display text-base font-semibold text-tinta">
             {user.nombre}
           </h2>
 
           {/* Placeholder: aún no existe este campo en el modelo de usuario */}
-          <p className="mt-1 text-xs text-tinta/50">
-            🎓 Agrega tu formación académica
-          </p>
-          <p className="mt-1 text-xs text-tinta/50">
-            💚 Agrega tus intereses (ej. cultura, medio ambiente)
-          </p>
+          {user.formacion ? (
+            <p className="mt-1 text-xs text-tinta/60">🎓 {user.formacion}</p>
+          ) : (
+            <Link
+              to={`/perfil/${user._id}`}
+              className="mt-1 block text-xs text-tinta/50 hover:underline"
+            >
+              🎓 Agrega tu formación académica
+            </Link>
+          )}
+
+          {user.intereses && user.intereses.length > 0 ? (
+            <p className="mt-1 text-xs text-tinta/60">
+              💚 {user.intereses.join(", ")}
+            </p>
+          ) : (
+            <Link
+              to={`/perfil/${user._id}`}
+              className="mt-1 block text-xs text-tinta/50 hover:underline"
+            >
+              💚 Agrega tus intereses
+            </Link>
+          )}
         </div>
       ) : (
         <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
-          <p className="text-sm text-tinta/60">Inicia sesión para ver tu perfil aquí.</p>
+          <p className="text-sm text-tinta/60">
+            Inicia sesión para ver tu perfil aquí.
+          </p>
         </div>
       )}
 
