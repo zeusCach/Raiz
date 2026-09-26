@@ -60,3 +60,83 @@ export async function loginUsuario(email: string, password: string) {
 function generarToken(userId: string) {
     return jwt.sign({sub: userId}, env.jwtSecret, {expiresIn: TOKEN_EXPIRY});
 }
+
+
+export async function seguirUsuario(userId: string, targetId: string) {
+  //verificamos que el usuario no intente seguirse a sí mismo
+  if (userId === targetId) {
+    throw new Error('No puedes seguirte a ti mismo');
+  }
+
+  //buscamos al usuario que se quiere seguir
+  const target = await User.findById(targetId);
+
+  //si no existe el usuario se rechaza la acción
+  if (!target) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //agregamos al usuario a la lista de seguidos evitando duplicados
+  await User.findByIdAndUpdate(userId, { $addToSet: { siguiendo: targetId } });
+
+  //buscamos nuevamente al usuario para obtener la lista actualizada
+  const actualizado = await User.findById(userId);
+
+  //devolvemos los ids de los usuarios que sigue
+  return actualizado!.siguiendo.map((id) => id.toString());
+}
+
+export async function dejarDeSeguirUsuario(userId: string, targetId: string) {
+  //eliminamos al usuario de la lista de seguidos
+  await User.findByIdAndUpdate(userId, { $pull: { siguiendo: targetId } });
+
+  //buscamos nuevamente al usuario para obtener la lista actualizada
+  const actualizado = await User.findById(userId);
+
+  //devolvemos los ids de los usuarios que sigue
+  return actualizado!.siguiendo.map((id) => id.toString());
+}
+
+export async function obtenerPerfilPublico(id: string) {
+  //buscamos al usuario y obtenemos solamente sus datos públicos
+  const user = await User.findById(id).select('nombre createdAt bio formacion intereses');
+
+  //si no existe el usuario se rechaza la consulta
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //contamos cuántos usuarios siguen a este usuario
+  const seguidoresCount = await User.countDocuments({ siguiendo: id });
+
+  //devolvemos los datos del usuario junto con la cantidad de seguidores
+  return { ...user.toObject(), seguidoresCount };
+}
+
+export async function actualizarPerfil(
+  userId: string,
+  data: { bio?: string; formacion?: string; intereses?: string[] }
+) {
+  //actualizamos los datos del perfil y obtenemos la información actualizada
+  const user = await User.findByIdAndUpdate(userId, data, { new: true }).select(
+    'nombre email bio formacion intereses siguiendo'
+  );
+
+  //si no existe el usuario se rechaza la actualización
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //devolvemos los datos actualizados del usuario
+  return user;
+}
+
+export async function obtenerSugeridos(userId: string, siguiendo: string[]) {
+  //creamos una lista con los usuarios que ya seguimos y el usuario actual
+  const excluidos = [...siguiendo, userId];
+
+  //buscamos usuarios que no estén en la lista de excluidos y obtenemos los primeros cinco
+  return User.find({ _id: { $nin: excluidos } })
+    .select('nombre createdAt')
+    .limit(5);
+}

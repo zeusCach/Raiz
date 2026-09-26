@@ -4,26 +4,26 @@ import type { Request, Response, NextFunction } from 'express';
 import * as postCulturaService from './postCultura.service';
 
 // Obtiene todos los posts, opcionalmente filtrados por tipo.
-export async function getPosts(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getPosts(req: Request, res: Response, next: NextFunction) {
   try {
-    // Obtiene el tipo de post enviado mediante query (?tipo=foro).
-    const tipo =
-      typeof req.query.tipo === 'string'
-        ? req.query.tipo
-        : undefined;
 
-    // Solicita los posts al servicio.
-    const posts = await postCulturaService.getPosts(tipo);
+    //obtenemos el tipo de publicación enviado en la consulta
+    const tipo = typeof req.query.tipo === 'string' ? req.query.tipo : undefined;
 
-    // Devuelve los posts al cliente.
+    //obtenemos el id del autor enviado en la consulta
+    const autor = typeof req.query.autor === 'string' ? req.query.autor : undefined;
+
+    //buscamos las publicaciones aplicando los filtros recibidos
+    const posts = await postCulturaService.getPosts(tipo, autor);
+
+    //enviamos las publicaciones encontradas
     res.json(posts);
+
   } catch (error) {
-    // Envía el error al middleware global de errores.
+
+    //enviamos el error al manejador de errores
     next(error);
+
   }
 }
 

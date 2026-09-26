@@ -6,6 +6,7 @@ import { BottomNav } from '../shared/components/BottomNav';
 import { useAuthStore } from '../features/auth/store/authStore';
 import { useEffect } from 'react';
 import { fetchUsuarioActual } from '../features/auth/services/auth.services';
+import { TopNav } from '../shared/components/TopNav';
 
 export function AppLayout() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -18,6 +19,7 @@ export function AppLayout() {
   return (
     <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-papel font-body">
       <Navbar />
+      <TopNav/>
       <div className="flex flex-1">
         <Sidebar />
         <div className="flex-1 pb-20 md:pb-0">
