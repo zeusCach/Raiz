@@ -1,9 +1,11 @@
 // shared/components/Navbar.tsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../features/auth/store/authStore';
-import { logoutUsuario } from '../../features/auth/services/auth.services';
-import { useSearchStore } from '../../features/feed/store/searchStore';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../features/auth/store/authStore";
+import { logoutUsuario } from "../../features/auth/services/auth.services";
+import { useSearchStore } from "../../features/feed/store/searchStore";
+import { FaSeedling } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
 
 export function Navbar() {
   const user = useAuthStore((state) => state.user);
@@ -16,15 +18,17 @@ export function Navbar() {
   async function handleLogout() {
     await logoutUsuario();
     setUser(null);
-    navigate('/feed');
+    navigate("/feed");
   }
 
   return (
     <header className="border-b border-arcilla bg-papel">
       <div className="flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
         <Link to="/feed" className="flex shrink-0 items-center gap-2">
-          <span className="text-2xl">🌱</span>
-          <span className="hidden font-display text-xl font-bold text-tinta sm:inline">Raíz</span>
+          <FaSeedling className="h-6 w-6 text-verde" />
+          <span className="hidden font-display text-xl font-bold text-tinta sm:inline">
+            Raíz
+          </span>
         </Link>
 
         {/* Buscador completo — solo desktop */}
@@ -45,13 +49,13 @@ export function Navbar() {
             className="rounded-full p-2 text-tinta/70 hover:bg-arcilla/30 md:hidden"
             aria-label="Buscar"
           >
-            <span className="text-xl">🔍</span>
+             <FiSearch className="h-5 w-5" />
           </button>
 
           {user ? (
             <div className="hidden items-center gap-3 md:flex">
               <span className="font-body text-sm text-tinta/80">
-                Hola, {user.nombre.split(' ')[0]}
+                Hola, {user.nombre.split(" ")[0]}
               </span>
               <button
                 onClick={handleLogout}

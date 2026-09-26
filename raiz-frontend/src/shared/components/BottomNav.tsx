@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { FiHome, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
+import { FaHandshake } from 'react-icons/fa';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
 import { MoreMenu } from './MoreMenu';
 import type { TipoPost } from '../../features/postCultura/schema/post.schema';
 
-const NAV_ITEMS: { icon: string; label: string; key: string; tipo: TipoPost | null }[] = [
-  { icon: '🏠', label: 'Inicio', key: 'inicio', tipo: null },
-  { icon: '💬', label: 'Foro', key: 'foro', tipo: 'foro' },
-  { icon: '🤝', label: 'Reuniones', key: 'reuniones', tipo: 'reunion' },
+const NAV_ITEMS: { Icon: React.ComponentType<{ className?: string }>; label: string; key: string; tipo: TipoPost | null }[] = [
+  { Icon: FiHome, label: 'Inicio', key: 'inicio', tipo: null },
+  { Icon: FiMessageCircle, label: 'Foro', key: 'foro', tipo: 'foro' },
+  { Icon: FaHandshake, label: 'Reuniones', key: 'reuniones', tipo: 'reunion' },
 ];
 
 export function BottomNav() {
@@ -26,19 +28,19 @@ export function BottomNav() {
         }`}
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
       >
-        {NAV_ITEMS.map((item) => (
+        {NAV_ITEMS.map(({ Icon, label, key, tipo }) => (
           <button
-            key={item.key}
+            key={key}
             onClick={() => {
-              setTipo(item.tipo);
+              setTipo(tipo);
               setMenuAbierto(false);
             }}
             className={`flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1.5 text-xs font-medium transition ${
-              tipoActivo === item.tipo ? 'text-verde' : 'text-tinta/50'
+              tipoActivo === tipo ? 'text-verde' : 'text-tinta/50'
             }`}
           >
-            <span className="text-xl">{item.icon}</span>
-            {item.label}
+            <Icon className="h-5 w-5" />
+            {label}
           </button>
         ))}
 
@@ -48,7 +50,7 @@ export function BottomNav() {
             menuAbierto ? 'text-verde' : 'text-tinta/50'
           }`}
         >
-          <span className="text-xl">☰</span>
+          <FiMoreHorizontal className="h-5 w-5" />
           Más
         </button>
       </nav>

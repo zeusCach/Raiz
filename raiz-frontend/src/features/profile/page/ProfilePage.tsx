@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useProfile } from '../hooks/useProfile';
-import { FollowButton } from '../components/FollowButton';
-import { PostCard } from '../../postCultura/components/postCard/PostCard';
-import { useAuthStore } from '../../auth/store/authStore';
-import { actualizarMiPerfil } from '../../auth/services/auth.services';
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useProfile } from "../hooks/useProfile";
+import { FollowButton } from "../components/FollowButton";
+import { PostCard } from "../../postCultura/components/postCard/PostCard";
+import { useAuthStore } from "../../auth/store/authStore";
+import { actualizarMiPerfil } from "../../auth/services/auth.services";
+import { FaGraduationCap } from "react-icons/fa";
 
 export function ProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -12,9 +13,9 @@ export function ProfilePage() {
   const sessionUser = useAuthStore((state) => state.user);
   const setSessionUser = useAuthStore((state) => state.setUser);
   const [editando, setEditando] = useState(false);
-  const [bio, setBio] = useState('');
-  const [formacion, setFormacion] = useState('');
-  const [intereses, setIntereses] = useState('');
+  const [bio, setBio] = useState("");
+  const [formacion, setFormacion] = useState("");
+  const [intereses, setIntereses] = useState("");
   const [guardando, setGuardando] = useState(false);
 
   const esMiPerfil = sessionUser?._id === id;
@@ -23,7 +24,7 @@ export function ProfilePage() {
     if (!perfil) return;
     setBio(perfil.bio);
     setFormacion(perfil.formacion);
-    setIntereses(perfil.intereses.join(', '));
+    setIntereses(perfil.intereses.join(", "));
     setEditando(true);
   }
 
@@ -33,9 +34,13 @@ export function ProfilePage() {
       const usuarioActualizado = await actualizarMiPerfil({
         bio,
         formacion,
-        intereses: intereses.split(',').map((i) => i.trim()).filter(Boolean),
+        intereses: intereses
+          .split(",")
+          .map((i) => i.trim())
+          .filter(Boolean),
       });
-      if (sessionUser) setSessionUser({ ...sessionUser, ...usuarioActualizado });
+      if (sessionUser)
+        setSessionUser({ ...sessionUser, ...usuarioActualizado });
       setEditando(false);
       refetch();
     } finally {
@@ -44,13 +49,17 @@ export function ProfilePage() {
   }
 
   if (loading) {
-    return <div className="px-4 py-8 text-center text-tinta/50 md:px-8">Cargando perfil...</div>;
+    return (
+      <div className="px-4 py-8 text-center text-tinta/50 md:px-8">
+        Cargando perfil...
+      </div>
+    );
   }
 
   if (error || !perfil) {
     return (
       <div className="px-4 py-8 text-center text-terracota md:px-8">
-        {error ?? 'Perfil no encontrado.'}
+        {error ?? "Perfil no encontrado."}
       </div>
     );
   }
@@ -79,14 +88,19 @@ export function ProfilePage() {
             </div>
           </div>
 
-          <h1 className="mt-4 font-display text-2xl font-bold text-tinta">{perfil.nombre}</h1>
+          <h1 className="mt-4 font-display text-2xl font-bold text-tinta">
+            {perfil.nombre}
+          </h1>
 
           <p className="mt-1 text-sm text-tinta/70">
-            {perfil.bio || (esMiPerfil ? 'Agrega una descripción breve sobre ti' : '')}
+            {perfil.bio ||
+              (esMiPerfil ? "Agrega una descripción breve sobre ti" : "")}
           </p>
 
           {perfil.formacion && (
-            <p className="mt-2 text-sm text-tinta/60">🎓 {perfil.formacion}</p>
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-tinta/60">
+              <FaGraduationCap className="h-4 w-4" /> {perfil.formacion}
+            </p>
           )}
 
           {perfil.intereses.length > 0 && (
@@ -103,27 +117,32 @@ export function ProfilePage() {
           )}
 
           <p className="mt-3 text-sm text-tinta/50">
-            Miembro desde{' '}
-            {new Date(perfil.createdAt).toLocaleDateString('es-MX', {
-              month: 'long',
-              year: 'numeric',
+            Miembro desde{" "}
+            {new Date(perfil.createdAt).toLocaleDateString("es-MX", {
+              month: "long",
+              year: "numeric",
             })}
           </p>
 
           <p className="mt-2 text-sm font-medium text-tinta/70">
-            {perfil.seguidoresCount} seguidor{perfil.seguidoresCount === 1 ? '' : 'es'} ·{' '}
-            {posts.length} publicaci{posts.length === 1 ? 'ón' : 'ones'}
+            {perfil.seguidoresCount} seguidor
+            {perfil.seguidoresCount === 1 ? "" : "es"} · {posts.length}{" "}
+            publicaci{posts.length === 1 ? "ón" : "ones"}
           </p>
         </div>
       </div>
 
       {editando && (
         <div className="mt-4 rounded-2xl border border-arcilla bg-white/60 p-5">
-          <h3 className="font-display text-base font-semibold text-tinta">Editar perfil</h3>
+          <h3 className="font-display text-base font-semibold text-tinta">
+            Editar perfil
+          </h3>
 
           <div className="mt-4 flex flex-col gap-3">
             <div>
-              <label className="text-sm font-medium text-tinta">Descripción breve</label>
+              <label className="text-sm font-medium text-tinta">
+                Descripción breve
+              </label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -134,7 +153,9 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-tinta">Formación académica</label>
+              <label className="text-sm font-medium text-tinta">
+                Formación académica
+              </label>
               <input
                 value={formacion}
                 onChange={(e) => setFormacion(e.target.value)}
@@ -144,7 +165,9 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-tinta">Intereses (separados por coma)</label>
+              <label className="text-sm font-medium text-tinta">
+                Intereses (separados por coma)
+              </label>
               <input
                 value={intereses}
                 onChange={(e) => setIntereses(e.target.value)}
@@ -160,7 +183,7 @@ export function ProfilePage() {
               disabled={guardando}
               className="rounded-full bg-verde px-4 py-2 text-sm font-semibold text-papel transition hover:bg-verde-light disabled:opacity-50"
             >
-              {guardando ? 'Guardando...' : 'Guardar'}
+              {guardando ? "Guardando..." : "Guardar"}
             </button>
             <button
               onClick={() => setEditando(false)}
