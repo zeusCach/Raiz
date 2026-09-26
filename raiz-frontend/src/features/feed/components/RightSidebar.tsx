@@ -70,6 +70,14 @@ export function RightSidebar() {
           </ul>
         )}
       </div>
+
+       {/* Placeholder: falta un endpoint de "usuarios sugeridos" en el backend */}
+      <div className="rounded-2xl border border-arcilla bg-white/60 p-5">
+        <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-tinta">
+          <span>👥</span> Personas que podrías seguir
+        </h3>
+        <p className="mt-2 text-sm text-tinta/60">Próximamente.</p>
+      </div>
     </aside>
   );
 }

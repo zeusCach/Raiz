@@ -1,13 +1,5 @@
-import { useCategoryFilterStore } from '../store/categoryFilterStore';
-import type { TipoPost } from '../../postCultura/schema/post.schema';
-
-const NAV_ITEMS: { icon: string; label: string; key: string; tipo: TipoPost | null }[] = [
-  { icon: '🏠', label: 'Inicio', key: 'inicio', tipo: null },
-  { icon: '💬', label: 'Foro', key: 'foro', tipo: 'foro' },
-  { icon: '🤝', label: 'Reuniones', key: 'reuniones', tipo: 'reunion' },
-  { icon: '✋', label: 'Colaboraciones', key: 'colaboraciones', tipo: 'colaboracion' },
-  { icon: '🌾', label: 'Donaciones', key: 'donaciones', tipo: 'donacion' },
-];
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '../../auth/store/authStore';
 
 const OTROS_ITEMS = [
   { icon: '📌', label: 'Guardados', key: 'guardados' },
@@ -16,30 +8,37 @@ const OTROS_ITEMS = [
 ];
 
 export function Sidebar() {
-  const tipoActivo = useCategoryFilterStore((state) => state.tipo);
-  const setTipo = useCategoryFilterStore((state) => state.setTipo);
+  const user = useAuthStore((state) => state.user);
 
   return (
-    <aside className="hidden w-56 flex-col justify-between border-r border-arcilla bg-papel px-3 py-6 md:flex">
-      <nav className="flex flex-col gap-1">
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item.key}
-            onClick={() => setTipo(item.tipo)}
-            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-              tipoActivo === item.tipo
-                ? 'bg-verde text-papel'
-                : 'text-tinta/70 hover:bg-arcilla/40'
-            }`}
-          >
-            <span>{item.icon}</span>
-            {item.label}
-          </button>
-        ))}
-      </nav>
+    <aside className="hidden w-64 flex-col gap-4 border-r border-arcilla bg-papel px-4 py-6 md:flex">
+      {user ? (
+        <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
+          <Link to={`/perfil/${user._id}`}>
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-verde/15 font-display text-2xl font-semibold text-verde">
+            {user.nombre.charAt(0).toUpperCase()}
+          </span>
+          </Link>
+          <h2 className="mt-3 font-display text-base font-semibold text-tinta">
+            {user.nombre}
+          </h2>
+
+          {/* Placeholder: aún no existe este campo en el modelo de usuario */}
+          <p className="mt-1 text-xs text-tinta/50">
+            🎓 Agrega tu formación académica
+          </p>
+          <p className="mt-1 text-xs text-tinta/50">
+            💚 Agrega tus intereses (ej. cultura, medio ambiente)
+          </p>
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
+          <p className="text-sm text-tinta/60">Inicia sesión para ver tu perfil aquí.</p>
+        </div>
+      )}
 
       <div className="border-t border-arcilla pt-4">
-        <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-tinta/40">
+        <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-tinta/40">
           Otros
         </p>
         <nav className="flex flex-col gap-1">
