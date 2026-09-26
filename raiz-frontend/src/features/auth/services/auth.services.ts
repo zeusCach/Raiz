@@ -8,9 +8,22 @@ export interface AuthUser {
   nombre: string;
   email: string;
   siguiendo: string[];
+  bio: string;
+  formacion: string;
+  intereses: string[];
 }
 
 export interface PerfilPublico {
+  _id: string;
+  nombre: string;
+  createdAt: string;
+  bio: string;
+  formacion: string;
+  intereses: string[];
+  seguidoresCount: number;
+}
+
+export interface UsuarioSugerido {
   _id: string;
   nombre: string;
   createdAt: string;
@@ -105,4 +118,41 @@ export async function dejarDeSeguirUsuario(id: string): Promise<string[]> {
 
   //devolvemos la lista de usuarios que seguimos
   return siguiendo;
+}
+
+export async function actualizarMiPerfil(data: {
+  bio?: string;
+  formacion?: string;
+  intereses?: string[];
+}): Promise<AuthUser> {
+  //enviamos los datos actualizados del perfil
+  const res = await fetch(`${API_URL}/auth/me`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+
+  //si la actualización falla se muestra un error
+  if (!res.ok) throw new Error('No se pudo actualizar el perfil');
+
+  //obtenemos el usuario actualizado de la respuesta
+  const { user } = await res.json();
+
+  //devolvemos los datos actualizados del usuario
+  return user;
+}
+
+export async function fetchSugeridos(): Promise<UsuarioSugerido[]> {
+  //buscamos usuarios sugeridos para el usuario actual
+  const res = await fetch(`${API_URL}/auth/sugeridos`, { credentials: 'include' });
+
+  //si ocurre un error devolvemos una lista vacía
+  if (!res.ok) return [];
+
+  //obtenemos la lista de usuarios sugeridos
+  const { usuarios } = await res.json();
+
+  //devolvemos los usuarios sugeridos
+  return usuarios;
 }

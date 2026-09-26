@@ -6,6 +6,9 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
     siguiendo: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+    bio: { type: String, default: '' },
+    formacion: { type: String, default: '' },
+    intereses: [{ type: String, default: [] }],
   },
   { timestamps: true }
 );

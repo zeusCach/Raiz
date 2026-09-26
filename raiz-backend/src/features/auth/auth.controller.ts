@@ -202,3 +202,50 @@ export async function perfil(req: Request, res: Response, next: NextFunction) {
   }
 
 }
+
+export async function actualizarMiPerfil(req: Request, res: Response, next: NextFunction) {
+  try {
+
+    //obtenemos los datos del perfil enviados por el usuario
+    const { bio, formacion, intereses } = req.body;
+
+    //actualizamos el perfil del usuario que tiene la sesión activa
+    const user = await authService.actualizarPerfil(req.user!._id, { bio, formacion, intereses });
+
+    //enviamos los datos actualizados del usuario
+    res.json({
+      user: {
+        _id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        bio: user.bio,
+        formacion: user.formacion,
+        intereses: user.intereses,
+        siguiendo: user.siguiendo.map((id) => id.toString()),
+      },
+    });
+
+  } catch (error) {
+
+    //enviamos el error al manejador de errores
+    next(error);
+
+  }
+}
+
+export async function sugeridos(req: Request, res: Response, next: NextFunction) {
+  try {
+
+    //buscamos usuarios sugeridos para el usuario actual
+    const usuarios = await authService.obtenerSugeridos(req.user!._id, req.user!.siguiendo);
+
+    //enviamos la lista de usuarios sugeridos
+    res.json({ usuarios });
+
+  } catch (error) {
+
+    //enviamos el error al manejador de errores
+    next(error);
+
+  }
+}

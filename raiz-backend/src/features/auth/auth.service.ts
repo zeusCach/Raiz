@@ -99,13 +99,44 @@ export async function dejarDeSeguirUsuario(userId: string, targetId: string) {
 
 export async function obtenerPerfilPublico(id: string) {
   //buscamos al usuario y obtenemos solamente sus datos públicos
-  const user = await User.findById(id).select('nombre createdAt');
+  const user = await User.findById(id).select('nombre createdAt bio formacion intereses');
 
   //si no existe el usuario se rechaza la consulta
   if (!user) {
     throw new Error('Usuario no encontrado');
   }
 
-  //devolvemos los datos públicos del usuario
+  //contamos cuántos usuarios siguen a este usuario
+  const seguidoresCount = await User.countDocuments({ siguiendo: id });
+
+  //devolvemos los datos del usuario junto con la cantidad de seguidores
+  return { ...user.toObject(), seguidoresCount };
+}
+
+export async function actualizarPerfil(
+  userId: string,
+  data: { bio?: string; formacion?: string; intereses?: string[] }
+) {
+  //actualizamos los datos del perfil y obtenemos la información actualizada
+  const user = await User.findByIdAndUpdate(userId, data, { new: true }).select(
+    'nombre email bio formacion intereses siguiendo'
+  );
+
+  //si no existe el usuario se rechaza la actualización
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+
+  //devolvemos los datos actualizados del usuario
   return user;
+}
+
+export async function obtenerSugeridos(userId: string, siguiendo: string[]) {
+  //creamos una lista con los usuarios que ya seguimos y el usuario actual
+  const excluidos = [...siguiendo, userId];
+
+  //buscamos usuarios que no estén en la lista de excluidos y obtenemos los primeros cinco
+  return User.find({ _id: { $nin: excluidos } })
+    .select('nombre createdAt')
+    .limit(5);
 }
