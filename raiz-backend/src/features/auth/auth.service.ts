@@ -99,7 +99,7 @@ export async function dejarDeSeguirUsuario(userId: string, targetId: string) {
 
 export async function obtenerPerfilPublico(id: string) {
   //buscamos al usuario y obtenemos solamente sus datos públicos
-  const user = await User.findById(id).select('nombre createdAt bio formacion intereses');
+  const user = await User.findById(id).select('nombre createdAt bio formacion intereses fotoUrl bannerUrl');
 
   //si no existe el usuario se rechaza la consulta
   if (!user) {
@@ -115,11 +115,11 @@ export async function obtenerPerfilPublico(id: string) {
 
 export async function actualizarPerfil(
   userId: string,
-  data: { bio?: string; formacion?: string; intereses?: string[] }
+  data: { bio?: string; formacion?: string; intereses?: string[]; fotoUrl?: string, bannerUrl?: string }
 ) {
   //actualizamos los datos del perfil y obtenemos la información actualizada
   const user = await User.findByIdAndUpdate(userId, data, { new: true }).select(
-    'nombre email bio formacion intereses siguiendo'
+    'nombre email bio formacion intereses fotoUrl bannerUrl siguiendo'
   );
 
   //si no existe el usuario se rechaza la actualización
