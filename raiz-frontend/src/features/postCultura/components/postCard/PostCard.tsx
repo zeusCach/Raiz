@@ -33,7 +33,6 @@ export function PostCard({ post }: { post: PostCultura }) {
           </span>
         )}
       </div>
-
       {post.imagenUrl && (
         <img
           src={post.imagenUrl}
@@ -41,12 +40,10 @@ export function PostCard({ post }: { post: PostCultura }) {
           className="mb-3 h-55 w-full rounded-xl object-cover"
         />
       )}
-
       <h3 className="font-serif text-lg font-semibold text-[#3A3226]">
         {post.titulo}
       </h3>
       <p className="mt-1 text-sm text-[#6B5F4E]">{post.descripcion}</p>
-
       {post.tipo === "reunion" && (
         <p className="mt-3 flex items-center gap-1.5 text-sm text-[#4A6741]">
           <FiCalendar className="h-4 w-4" />
@@ -54,7 +51,6 @@ export function PostCard({ post }: { post: PostCultura }) {
           {post.lugar}
         </p>
       )}
-
       {post.tipo === "colaboracion" && (
         <div className="mt-3 flex flex-wrap gap-1">
           {post.habilidadesRequeridas.map((h) => (
@@ -67,9 +63,19 @@ export function PostCard({ post }: { post: PostCultura }) {
           ))}
         </div>
       )}
-
       <div className="mt-4 flex items-center justify-between border-t border-[#E8DCC8] pt-3">
         <div className="flex items-center gap-2">
+          {post.autor.avatarUrl ? (
+            <img
+              src={post.autor.avatarUrl}
+              alt={post.autor.nombre}
+              className="h-6 w-6 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-verde/15 text-[10px] font-semibold text-verde">
+              {post.autor.nombre.charAt(0).toUpperCase()}
+            </span>
+          )}
           <Link
             to={`/perfil/${post.autor._id}`}
             className="text-xs font-medium text-[#8A7D68] hover:underline"

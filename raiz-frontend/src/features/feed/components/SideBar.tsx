@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
-import { FaGraduationCap } from 'react-icons/fa';
-import { FiHeart, FiBookmark, FiBookOpen } from 'react-icons/fi';
-import { useAuthStore } from '../../auth/store/authStore';
+import { Link } from "react-router-dom";
+import { FaGraduationCap } from "react-icons/fa";
+import { FiHeart, FiBookmark, FiBookOpen } from "react-icons/fi";
+import { useAuthStore } from "../../auth/store/authStore";
 
 const OTROS_ITEMS = [
-  { Icon: FiBookmark, label: 'Guardados', key: 'guardados' },
-  { Icon: FiHeart, label: 'Comunidad', key: 'comunidad' },
-  { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
+  { Icon: FiBookmark, label: "Guardados", key: "guardados" },
+  { Icon: FiHeart, label: "Comunidad", key: "comunidad" },
+  { Icon: FiBookOpen, label: "Acerca de", key: "acerca" },
 ];
 
 export function Sidebar() {
@@ -16,12 +16,24 @@ export function Sidebar() {
     <aside className="hidden w-64 flex-col gap-4 border-r border-arcilla bg-papel px-4 py-6 md:flex">
       {user ? (
         <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
-         <Link to={`/perfil/${user._id}`}>
+          <Link to={`/perfil/${user._id}`}>
             <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-verde/15 font-display text-2xl font-semibold text-verde">
-              {user.nombre.charAt(0).toUpperCase()}
+              {user.fotoUrl ? (
+                <img
+                  src={user.fotoUrl}
+                  alt={user.nombre}
+                  className="mx-auto h-16 w-16 rounded-full object-cover"
+                />
+              ) : (
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-verde/15 font-display text-2xl font-semibold text-verde">
+                  {user.nombre.charAt(0).toUpperCase()}
+                </span>
+              )}
             </span>
           </Link>
-          <h2 className="mt-3 font-display text-base font-semibold text-tinta">{user.nombre}</h2>
+          <h2 className="mt-3 font-display text-base font-semibold text-tinta">
+            {user.nombre}
+          </h2>
 
           {user.formacion ? (
             <p className="mt-1 flex items-center justify-center gap-1 text-xs text-tinta/60">
@@ -32,13 +44,14 @@ export function Sidebar() {
               to={`/perfil/${user._id}`}
               className="mt-1 flex items-center justify-center gap-1 text-xs text-tinta/50 hover:underline"
             >
-              <FaGraduationCap className="h-3.5 w-3.5" /> Agrega tu formación académica
+              <FaGraduationCap className="h-3.5 w-3.5" /> Agrega tu formación
+              académica
             </Link>
           )}
 
           {user.intereses && user.intereses.length > 0 ? (
             <p className="mt-1 flex items-center justify-center gap-1 text-xs text-tinta/60">
-              <FiHeart className="h-3.5 w-3.5" /> {user.intereses.join(', ')}
+              <FiHeart className="h-3.5 w-3.5" /> {user.intereses.join(", ")}
             </p>
           ) : (
             <Link
@@ -51,7 +64,9 @@ export function Sidebar() {
         </div>
       ) : (
         <div className="rounded-2xl border border-arcilla bg-white/60 p-5 text-center">
-          <p className="text-sm text-tinta/60">Inicia sesión para ver tu perfil aquí.</p>
+          <p className="text-sm text-tinta/60">
+            Inicia sesión para ver tu perfil aquí.
+          </p>
         </div>
       )}
 
