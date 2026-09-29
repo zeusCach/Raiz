@@ -9,6 +9,8 @@ const userSchema = new Schema(
     bio: { type: String, default: '' },
     formacion: { type: String, default: '' },
     intereses: [{ type: String, default: [] }],
+    fotoUrl: { type: String, default: '' },
+    bannerUrl: { type: String, default: '' },
   },
   { timestamps: true }
 );

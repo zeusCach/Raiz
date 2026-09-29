@@ -207,10 +207,11 @@ export async function actualizarMiPerfil(req: Request, res: Response, next: Next
   try {
 
     //obtenemos los datos del perfil enviados por el usuario
-    const { bio, formacion, intereses } = req.body;
+    const { bio, formacion, intereses, fotoUrl, bannerUrl } = req.body;
 
     //actualizamos el perfil del usuario que tiene la sesión activa
-    const user = await authService.actualizarPerfil(req.user!._id, { bio, formacion, intereses });
+    const user = await authService.actualizarPerfil(req.user!._id, { bio, formacion, intereses, fotoUrl,
+      bannerUrl, });
 
     //enviamos los datos actualizados del usuario
     res.json({
@@ -221,6 +222,8 @@ export async function actualizarMiPerfil(req: Request, res: Response, next: Next
         bio: user.bio,
         formacion: user.formacion,
         intereses: user.intereses,
+        fotoUrl: user.fotoUrl,
+        bannerUrl: user.bannerUrl,
         siguiendo: user.siguiendo.map((id) => id.toString()),
       },
     });

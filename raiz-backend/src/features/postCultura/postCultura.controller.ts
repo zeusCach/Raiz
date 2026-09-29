@@ -1,29 +1,30 @@
+import type { Request, Response, NextFunction } from "express";
 
-import type { Request, Response, NextFunction } from 'express';
-
-import * as postCulturaService from './postCultura.service';
+import * as postCulturaService from "./postCultura.service";
 
 // Obtiene todos los posts, opcionalmente filtrados por tipo.
-export async function getPosts(req: Request, res: Response, next: NextFunction) {
+export async function getPosts(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
-
     //obtenemos el tipo de publicación enviado en la consulta
-    const tipo = typeof req.query.tipo === 'string' ? req.query.tipo : undefined;
+    const tipo =
+      typeof req.query.tipo === "string" ? req.query.tipo : undefined;
 
     //obtenemos el id del autor enviado en la consulta
-    const autor = typeof req.query.autor === 'string' ? req.query.autor : undefined;
+    const autor =
+      typeof req.query.autor === "string" ? req.query.autor : undefined;
 
     //buscamos las publicaciones aplicando los filtros recibidos
     const posts = await postCulturaService.getPosts(tipo, autor);
 
     //enviamos las publicaciones encontradas
     res.json(posts);
-
   } catch (error) {
-
     //enviamos el error al manejador de errores
     next(error);
-
   }
 }
 
@@ -31,14 +32,15 @@ export async function getPosts(req: Request, res: Response, next: NextFunction) 
 export async function getPostById(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     // Obtiene el ID enviado en la URL (/posts/:id).
-    const postId = typeof req.params.id === 'string' ? req.params.id : undefined;
+    const postId =
+      typeof req.params.id === "string" ? req.params.id : undefined;
 
     if (!postId) {
-      res.status(400).json({ message: 'ID de post inválido' });
+      res.status(400).json({ message: "ID de post inválido" });
       return;
     }
 
@@ -46,7 +48,7 @@ export async function getPostById(
 
     // Si no existe el post, devuelve 404.
     if (!post) {
-      res.status(404).json({ message: 'Post no encontrado' });
+      res.status(404).json({ message: "Post no encontrado" });
       return;
     }
 
@@ -62,17 +64,17 @@ export async function getPostById(
 export async function createPost(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
-
     const autor = {
       _id: req.user!._id,
-      nombre: req.user!.nombre
+      nombre: req.user!.nombre,
+      avatarUrl: req.user!.fotoUrl || undefined,
     };
     
     // Obtiene los datos enviados en el body de la petición.
-    const post = await postCulturaService.createPost({...req.body, autor});
+    const post = await postCulturaService.createPost({ ...req.body, autor });
 
     // Devuelve el post creado con código HTTP 201.
     res.status(201).json(post);
