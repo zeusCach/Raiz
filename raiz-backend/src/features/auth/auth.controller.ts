@@ -1,19 +1,18 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import * as authService from './auth.service';
+import { env } from 'node:process';
+
+
+const isProd = env.nodeEnv === 'production';
 
 //configuramos las opciones de la cookie donde se guardará el token
 const COOKIE_OPTIONS = {
-
   httpOnly: true,
-
-  secure: false,
-
-  sameSite: 'lax' as const,
-
+  secure: isProd,
+  sameSite: (isProd ? 'none' : 'lax') as 'none' | 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000,
-
-};
+};isProd
 
 export async function registro(req: Request, res: Response, next: NextFunction) {
 
