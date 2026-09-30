@@ -11,6 +11,8 @@ export interface AuthUser {
   bio: string;
   formacion: string;
   intereses: string[];
+  fotoUrl: string;
+  bannerUrl: string;
 }
 
 export interface PerfilPublico {
@@ -21,6 +23,8 @@ export interface PerfilPublico {
   formacion: string;
   intereses: string[];
   seguidoresCount: number;
+  fotoUrl: string;
+  bannerUrl: string;
 }
 
 export interface UsuarioSugerido {
@@ -124,8 +128,10 @@ export async function actualizarMiPerfil(data: {
   bio?: string;
   formacion?: string;
   intereses?: string[];
+  fotoUrl?: string;
+  bannerUrl?: string;
 }): Promise<AuthUser> {
-  //enviamos los datos actualizados del perfil
+
   const res = await fetch(`${API_URL}/auth/me`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -133,15 +139,13 @@ export async function actualizarMiPerfil(data: {
     body: JSON.stringify(data),
   });
 
-  //si la actualización falla se muestra un error
   if (!res.ok) throw new Error('No se pudo actualizar el perfil');
 
-  //obtenemos el usuario actualizado de la respuesta
   const { user } = await res.json();
-
-  //devolvemos los datos actualizados del usuario
+  
   return user;
 }
+
 
 export async function fetchSugeridos(): Promise<UsuarioSugerido[]> {
   //buscamos usuarios sugeridos para el usuario actual

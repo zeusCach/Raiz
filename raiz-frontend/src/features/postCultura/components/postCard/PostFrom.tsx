@@ -1,17 +1,32 @@
+// features/postCultura/components/postCard/PostFrom.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreatePost } from "../../hooks/useCreatePost";
 import type { TipoPost } from "../../schema/post.schema";
 import type { CrearPostCulturaPayload } from "../../types/postCultura.types";
+import { FiMessageCircle } from "react-icons/fi";
+import {
+  FaHandHoldingHeart,
+  FaHandshake,
+  FaHandsHelping,
+} from "react-icons/fa";
 
-const TIPOS: { value: TipoPost; label: string; icon: string }[] = [
-  { value: "foro", label: "Foro", icon: "💬" },
-  { value: "reunion", label: "Reunión", icon: "🤝" },
-  { value: "colaboracion", label: "Colaboración", icon: "✋" },
-  { value: "donacion", label: "Donación", icon: "🌾" },
+const TIPOS: {
+  value: TipoPost;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  { value: "foro", label: "Foro", Icon: FiMessageCircle },
+  { value: "reunion", label: "Reunión", Icon: FaHandshake },
+  { value: "colaboracion", label: "Colaboración", Icon: FaHandsHelping },
+  { value: "donacion", label: "Donación", Icon: FaHandHoldingHeart },
 ];
 
-export function PostForm() {
+interface PostFormProps {
+  comunidadId?: string;
+}
+
+export function PostForm({ comunidadId }: PostFormProps) {
   const navigate = useNavigate();
   const { crearPost, loading, error } = useCreatePost();
 
@@ -45,6 +60,7 @@ export function PostForm() {
       descripcion,
       imagenUrl: imagenUrl || undefined,
       ubicacion: ubicacion || undefined,
+      comunidadId,
     };
 
     switch (tipo) {
@@ -107,7 +123,7 @@ export function PostForm() {
 
     const nuevoPost = await crearPost(payload);
     if (nuevoPost) {
-      navigate(`/post/${nuevoPost._id}`);
+      navigate(comunidadId ? `/comunidades/${comunidadId}` : `/post/${nuevoPost._id}`);
     }
   }
 
@@ -132,7 +148,7 @@ export function PostForm() {
                 : "border-arcilla text-tinta/60 hover:bg-arcilla/20"
             }`}
           >
-            <span className="mr-1">{t.icon}</span>
+            <t.Icon className="mr-1 inline h-4 w-4" />
             {t.label}
           </button>
         ))}
