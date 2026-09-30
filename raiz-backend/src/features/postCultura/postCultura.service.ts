@@ -2,18 +2,24 @@
 import { PostCultura } from './postCultura.model';
 
 // Obtiene los posts y permite filtrarlos por tipo.
-export async function getPosts(tipo?: string, autor?: string) {
-  //creamos un filtro vacío para buscar las publicaciones
+export async function getPosts(tipo?: string, autor?: string, comunidadId?: string) {
   const filter: Record<string, unknown> = {};
-
-  //si se recibe un tipo, agregamos el tipo al filtro
   if (tipo) filter.tipo = tipo;
-
-  //si se recibe un autor, agregamos su id al filtro
   if (autor) filter['autor._id'] = autor;
+  if (comunidadId) filter.comunidadId = comunidadId;
 
-  //buscamos las publicaciones y las ordenamos de la más reciente a la más antigua
-  return PostCultura.find(filter).sort({ createdAt: -1 });
+  const posts = await PostCultura.find(filter)
+    .sort({ createdAt: -1 })
+    .populate('comunidadId', 'nombre');
+
+  return posts.map((post) => {
+    const obj: any = post.toObject();
+    if (obj.comunidadId && typeof obj.comunidadId === 'object') {
+      obj.comunidadNombre = obj.comunidadId.nombre;
+      obj.comunidadId = obj.comunidadId._id.toString();
+    }
+    return obj;
+  });
 }
 
 // Busca un post mediante su ID.

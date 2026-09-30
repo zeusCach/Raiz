@@ -3,10 +3,9 @@ import { FaGraduationCap } from "react-icons/fa";
 import { FiHeart, FiBookmark, FiBookOpen } from "react-icons/fi";
 import { useAuthStore } from "../../auth/store/authStore";
 
-const OTROS_ITEMS = [
-  { Icon: FiBookmark, label: "Guardados", key: "guardados" },
-  { Icon: FiHeart, label: "Comunidad", key: "comunidad" },
-  { Icon: FiBookOpen, label: "Acerca de", key: "acerca" },
+const OTROS_DESHABILITADOS = [
+  { Icon: FiBookmark, label: 'Guardados', key: 'guardados' },
+  { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
 ];
 
 export function Sidebar() {
@@ -75,7 +74,14 @@ export function Sidebar() {
           Otros
         </p>
         <nav className="flex flex-col gap-1">
-          {OTROS_ITEMS.map(({ Icon, label, key }) => (
+          <Link
+            to="/comunidades"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/70 hover:bg-arcilla/40"
+          >
+            <FiHeart className="h-4 w-4" />
+            Comunidades
+          </Link>
+          {OTROS_DESHABILITADOS.map(({ Icon, label, key }) => (
             <button
               key={key}
               disabled

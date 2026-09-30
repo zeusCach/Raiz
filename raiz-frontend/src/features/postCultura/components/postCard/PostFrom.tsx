@@ -1,3 +1,4 @@
+// features/postCultura/components/postCard/PostFrom.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreatePost } from "../../hooks/useCreatePost";
@@ -21,7 +22,11 @@ const TIPOS: {
   { value: "donacion", label: "Donación", Icon: FaHandHoldingHeart },
 ];
 
-export function PostForm() {
+interface PostFormProps {
+  comunidadId?: string;
+}
+
+export function PostForm({ comunidadId }: PostFormProps) {
   const navigate = useNavigate();
   const { crearPost, loading, error } = useCreatePost();
 
@@ -55,6 +60,7 @@ export function PostForm() {
       descripcion,
       imagenUrl: imagenUrl || undefined,
       ubicacion: ubicacion || undefined,
+      comunidadId,
     };
 
     switch (tipo) {
@@ -117,7 +123,7 @@ export function PostForm() {
 
     const nuevoPost = await crearPost(payload);
     if (nuevoPost) {
-      navigate(`/post/${nuevoPost._id}`);
+      navigate(comunidadId ? `/comunidades/${comunidadId}` : `/post/${nuevoPost._id}`);
     }
   }
 

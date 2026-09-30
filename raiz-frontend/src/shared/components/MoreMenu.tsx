@@ -1,51 +1,28 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FaHandsHelping, FaHandHoldingHeart } from "react-icons/fa";
-import { FiBookmark, FiHeart, FiBookOpen } from "react-icons/fi";
-import { useAuthStore } from "../../features/auth/store/authStore";
-import { logoutUsuario } from "../../features/auth/services/auth.services";
-import { useCategoryFilterStore } from "../../features/feed/store/categoryFilterStore";
-import type { TipoPost } from "../../features/postCultura/schema/post.schema";
+import { Link, useNavigate } from 'react-router-dom';
+import { FaHandsHelping, FaHandHoldingHeart } from 'react-icons/fa';
+import { FiBookmark, FiHeart, FiBookOpen } from 'react-icons/fi';
+import { useAuthStore } from '../../features/auth/store/authStore';
+import { logoutUsuario } from '../../features/auth/services/auth.services';
+import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
+import type { TipoPost } from '../../features/postCultura/schema/post.schema';
 
-const MORE_ITEMS: {
+const FILTER_ITEMS: {
   Icon: React.ComponentType<{ className?: string }>;
   label: string;
   key: string;
-  tipo: TipoPost | null;
-  disabled?: boolean;
+  tipo: TipoPost;
 }[] = [
-  {
-    Icon: FaHandsHelping,
-    label: "Colaboraciones",
-    key: "colaboraciones",
-    tipo: "colaboracion",
-  },
-  {
-    Icon: FaHandHoldingHeart,
-    label: "Donaciones",
-    key: "donaciones",
-    tipo: "donacion",
-  },
-  {
-    Icon: FiBookmark,
-    label: "Guardados",
-    key: "guardados",
-    tipo: null,
-    disabled: true,
-  },
-  {
-    Icon: FiHeart,
-    label: "Comunidad",
-    key: "comunidad",
-    tipo: null,
-    disabled: true,
-  },
-  {
-    Icon: FiBookOpen,
-    label: "Acerca de",
-    key: "acerca",
-    tipo: null,
-    disabled: true,
-  },
+  { Icon: FaHandsHelping, label: 'Colaboraciones', key: 'colaboraciones', tipo: 'colaboracion' },
+  { Icon: FaHandHoldingHeart, label: 'Donaciones', key: 'donaciones', tipo: 'donacion' },
+];
+
+const LINK_ITEMS = [
+  { Icon: FiHeart, label: 'Comunidades', key: 'comunidades', to: '/comunidades' },
+];
+
+const DISABLED_ITEMS = [
+  { Icon: FiBookmark, label: 'Guardados', key: 'guardados' },
+  { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
 ];
 
 interface MoreMenuProps {
@@ -62,13 +39,7 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
     await logoutUsuario();
     setUser(null);
     onClose();
-    navigate("/feed");
-  }
-
-  function handleItemClick(item: (typeof MORE_ITEMS)[number]) {
-    if (item.disabled) return;
-    setTipo(item.tipo);
-    onClose();
+    navigate('/feed');
   }
 
   return (
@@ -80,21 +51,40 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
       />
       <div className="fixed inset-x-0 bottom-16 z-50 rounded-t-2xl border-t border-arcilla bg-papel p-3 shadow-lg md:hidden">
         <div className="grid grid-cols-3 gap-2">
-          {MORE_ITEMS.map((item) => (
+          {FILTER_ITEMS.map((item) => (
             <button
               key={item.key}
-              onClick={() => handleItemClick(item)}
-              disabled={item.disabled}
-              title={item.disabled ? "Próximamente" : undefined}
-              className={`flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium ${
-                item.disabled
-                  ? "cursor-not-allowed text-tinta/30"
-                  : "text-tinta/70 hover:bg-arcilla/30"
-              }`}
+              onClick={() => {
+                setTipo(item.tipo);
+                onClose();
+              }}
+              className="flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium text-tinta/70 hover:bg-arcilla/30"
             >
-              <item.Icon
-                className={item.disabled ? "h-5 w-5 opacity-50" : "h-5 w-5"}
-              />
+              <item.Icon className="h-5 w-5" />
+              {item.label}
+            </button>
+          ))}
+
+          {LINK_ITEMS.map((item) => (
+            <Link
+              key={item.key}
+              to={item.to}
+              onClick={onClose}
+              className="flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium text-tinta/70 hover:bg-arcilla/30"
+            >
+              <item.Icon className="h-5 w-5" />
+              {item.label}
+            </Link>
+          ))}
+
+          {DISABLED_ITEMS.map((item) => (
+            <button
+              key={item.key}
+              disabled
+              title="Próximamente"
+              className="flex cursor-not-allowed flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium text-tinta/30"
+            >
+              <item.Icon className="h-5 w-5 opacity-50" />
               {item.label}
             </button>
           ))}
