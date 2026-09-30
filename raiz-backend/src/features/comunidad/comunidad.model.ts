@@ -6,6 +6,7 @@ const comunidadSchema = new Schema(
     descripcion: { type: String, required: true },
     creador: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     miembros: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    bannerUrl: { type: String, default: '' },
   },
   { timestamps: true }
 );

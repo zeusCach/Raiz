@@ -9,5 +9,6 @@ comunidadRoutes.get('/:id', comunidadController.obtener);
 comunidadRoutes.post('/', requireAuth, comunidadController.crear);
 comunidadRoutes.post('/:id/unirse', requireAuth, comunidadController.unirse);
 comunidadRoutes.post('/:id/salir', requireAuth, comunidadController.salir);
+comunidadRoutes.patch('/:id/banner', requireAuth, comunidadController.actualizarBanner);
 
 export default comunidadRoutes;

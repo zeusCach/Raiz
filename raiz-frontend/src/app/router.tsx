@@ -10,6 +10,7 @@ import { ProfilePage } from "../features/profile/page/ProfilePage";
 import { ComunidadesPage } from "../features/comunidades/page/ComunidadesPage";
 import { CrearComunidadPage } from "../features/comunidades/page/CrearComunidadPage";
 import { ComunidadDetailPage } from "../features/comunidades/page/ComunidadDetailPage";
+import { ComunidadPublicarPage } from "../features/comunidades/page/ComunidadPublicarPage";
 
 export const router = createBrowserRouter([
   {
@@ -42,4 +43,12 @@ export const router = createBrowserRouter([
   },
   { path: "registro", element: <RegistroPage /> },
   { path: "login", element: <LoginPage /> },
+  {
+  path: 'comunidades/:id/publicar',
+  element: (
+    <ProtectedRoute>
+      <ComunidadPublicarPage />
+    </ProtectedRoute>
+  ),
+},
 ]);

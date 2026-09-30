@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 
 import * as postCulturaService from "./postCultura.service";
+import { Comunidad } from "../comunidad/comunidad.model";
 
 // Obtiene todos los posts, opcionalmente filtrados por tipo.
 export async function getPosts(
@@ -17,8 +18,12 @@ export async function getPosts(
     const autor =
       typeof req.query.autor === "string" ? req.query.autor : undefined;
 
+    //obtenemos el id de la comunidad enviado en la consulta
+    const comunidad =
+      typeof req.query.comunidad === "string" ? req.query.comunidad : undefined;
+
     //buscamos las publicaciones aplicando los filtros recibidos
-    const posts = await postCulturaService.getPosts(tipo, autor);
+    const posts = await postCulturaService.getPosts(tipo, autor, comunidad);
 
     //enviamos las publicaciones encontradas
     res.json(posts);
@@ -61,25 +66,47 @@ export async function getPostById(
 }
 
 // Crea un nuevo post utilizando los datos enviados por el cliente.
-export async function createPost(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function createPost(req: Request, res: Response, next: NextFunction) {
   try {
+    //obtenemos el id de la comunidad donde se quiere publicar
+    const { comunidadId } = req.body;
+
+    //si la publicación pertenece a una comunidad verificamos que exista y que el usuario sea miembro
+    if (comunidadId) {
+
+      //buscamos la comunidad por su id
+      const comunidad = await Comunidad.findById(comunidadId);
+
+      //si no existe la comunidad se rechaza la publicación
+      if (!comunidad) {
+        res.status(404).json({ message: 'Comunidad no encontrada' });
+        return;
+      }
+
+      //verificamos que el usuario actual pertenezca a la comunidad
+      const esMiembro = comunidad.miembros.some((m) => m.toString() === req.user!._id);
+
+      //si el usuario no es miembro se rechaza la publicación
+      if (!esMiembro) {
+        res.status(403).json({ message: 'Debes unirte a la comunidad para publicar aquí' });
+        return;
+      }
+    }
+
+    //creamos los datos del autor usando la información del usuario actual
     const autor = {
       _id: req.user!._id,
       nombre: req.user!.nombre,
       avatarUrl: req.user!.fotoUrl || undefined,
     };
-    
-    // Obtiene los datos enviados en el body de la petición.
+
+    //creamos la publicación agregando los datos del autor
     const post = await postCulturaService.createPost({ ...req.body, autor });
 
-    // Devuelve el post creado con código HTTP 201.
+    //enviamos la publicación creada
     res.status(201).json(post);
   } catch (error) {
-    // Envía el error al middleware global de errores.
+    //enviamos el error al manejador de errores
     next(error);
   }
 }

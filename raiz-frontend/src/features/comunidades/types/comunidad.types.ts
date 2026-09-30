@@ -20,4 +20,5 @@ export interface ComunidadDetalle {
   creador: { _id: string; nombre: string };
   miembros: MiembroComunidad[];
   createdAt: string;
+  bannerUrl: string;
 }

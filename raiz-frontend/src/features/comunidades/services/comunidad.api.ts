@@ -42,3 +42,16 @@ export async function salirComunidad(id: string): Promise<ComunidadDetalle> {
   if (!res.ok) throw new Error('No se pudo salir de la comunidad');
   return res.json();
 }
+
+export async function actualizarBannerComunidad(id: string, bannerUrl: string): Promise<ComunidadDetalle> {
+  
+  const res = await fetch(`${API_URL}/comunidades/${id}/banner`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ bannerUrl }),
+  });
+
+  if (!res.ok) throw new Error('No se pudo actualizar el banner');
+  return res.json();
+}

@@ -25,6 +25,7 @@ const postCulturaBaseSchema = new Schema(
     autor: { type: autorSchema, required: true },
     imagenUrl: { type: String },
     ubicacion: { type: String },
+    comunidadId: { type: Schema.Types.ObjectId, ref: 'Comunidad', required: false },
   },
   baseOptions
 );

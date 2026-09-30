@@ -1,4 +1,4 @@
-import type { TipoPost } from "../schema/post.schema";
+import type { TipoPost } from '../schema/post.schema';
 
 interface PostCulturaBase {
   _id: string;
@@ -12,25 +12,25 @@ interface PostCulturaBase {
   };
   imagenUrl?: string;
   ubicacion?: string;
+  comunidadId?: string;
+  comunidadNombre?: string;
   createdAt: string;
   updatedAt: string;
 }
 
-
 export interface ForoPost extends PostCulturaBase {
-    tipo: 'foro';
-    categoria: string; // ej. "tradicion", "gastronomia", "lengua maya"
-    comentariosCount: number;
+  tipo: 'foro';
+  categoria: string;
+  comentariosCount: number;
 }
-
 
 export interface ReunionPost extends PostCulturaBase {
   tipo: 'reunion';
-   fecha: string;        // ISO date
+  fecha: string;
   hora: string;
   lugar: string;
   cupoMaximo?: number;
-  whatsappContacto: string; // número para confirmar asistencia
+  whatsappContacto: string;
 }
 
 export interface ColaboracionPost extends PostCulturaBase {
@@ -42,16 +42,15 @@ export interface ColaboracionPost extends PostCulturaBase {
 
 export interface DonacionPost extends PostCulturaBase {
   tipo: 'donacion';
-  metaDescripcion: string;   // qué se necesita (dinero, especie, etc.)
+  metaDescripcion: string;
   whatsappContacto: string;
   urgente?: boolean;
 }
 
 export type PostCultura = ForoPost | ReunionPost | ColaboracionPost | DonacionPost;
 
-// Payload genérico para creación — se valida por tipo en el form
 export type CrearPostCulturaPayload =
-  | Omit<ForoPost, '_id' | 'autor' | 'createdAt' | 'updatedAt' | 'comentariosCount'>
-  | Omit<ReunionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt'>
-  | Omit<ColaboracionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt'>
-  | Omit<DonacionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt'>;
+  | Omit<ForoPost, '_id' | 'autor' | 'createdAt' | 'updatedAt' | 'comentariosCount' | 'comunidadNombre'>
+  | Omit<ReunionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt' | 'comunidadNombre'>
+  | Omit<ColaboracionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt' | 'comunidadNombre'>
+  | Omit<DonacionPost, '_id' | 'autor' | 'createdAt' | 'updatedAt' | 'comunidadNombre'>;

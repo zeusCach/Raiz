@@ -78,3 +78,25 @@ export async function salirComunidad(id: string, userId: string) {
   //devolvemos la comunidad actualizada
   return comunidad;
 }
+
+export async function actualizarBanner(id: string, userId: string, bannerUrl: string) {
+  //buscamos la comunidad segun su ID
+  const comunidad = await Comunidad.findById(id);
+
+  //Si no se encuentra creamos un error
+  if (!comunidad) {
+    throw new Error('Comunidad no encontrada');
+  }
+
+  //Si existe mencionamos que solo el creador puede colocar un banner o editar
+  if (comunidad.creador.toString() !== userId) {
+    throw new Error('Solo el creador puede editar el banner');
+  }
+
+  //accedemos al banner url
+  comunidad.bannerUrl = bannerUrl;
+  await comunidad.save();
+
+  return Comunidad.findById(id).populate('miembros', 'nombre fotoUrl').populate('creador', 'nombre');
+  
+}

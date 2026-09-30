@@ -74,3 +74,31 @@ export async function salir(req: Request, res: Response, next: NextFunction) {
     next(error);
   }
 }
+
+export async function actualizarBanner(req: Request, res: Response, next: NextFunction) {
+  try {
+
+    //obtenemos la url del banner enviada por el usuario
+    const { bannerUrl } = req.body;
+
+    //actualizamos el banner de la comunidad verificando que el usuario sea el creador
+    const comunidad = await comunidadService.actualizarBanner(String(req.params.id), req.user!._id, bannerUrl);
+
+    //enviamos la comunidad actualizada
+    res.json(comunidad);
+
+  } catch (error) {
+
+    //si el usuario no es el creador o la comunidad no existe se devuelve un error 403
+    if (
+      error instanceof Error &&
+      (error.message.includes('Solo el creador') || error.message.includes('no encontrada'))
+    ) {
+      res.status(403).json({ message: error.message });
+      return;
+    }
+
+    //enviamos cualquier otro error al manejador de errores
+    next(error);
+  }
+}
