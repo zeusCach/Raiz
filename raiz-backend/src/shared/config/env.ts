@@ -17,5 +17,6 @@ export const env = {
   mongoUri: requireEnv('MONGO_URI'),
   clientUrls: (process.env.CLIENT_URLS || 'http://localhost:5173,http://192.168.2.6:5173').split(','),
   jwtSecret: requireEnv('JWT_SECRET'),
+  nodeEnv: process.env.NODE_ENV || 'development',
 };
 
