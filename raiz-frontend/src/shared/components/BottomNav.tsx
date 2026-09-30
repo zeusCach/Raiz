@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiHome, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
 import { FaHandshake } from 'react-icons/fa';
 import { useScrollDirection } from '../hooks/useScrollDirection';
@@ -15,8 +16,15 @@ const NAV_ITEMS: { Icon: React.ComponentType<{ className?: string }>; label: str
 export function BottomNav() {
   const tipoActivo = useCategoryFilterStore((state) => state.tipo);
   const setTipo = useCategoryFilterStore((state) => state.setTipo);
+  const navigate = useNavigate();
   const [menuAbierto, setMenuAbierto] = useState(false);
   const visible = useScrollDirection();
+
+  function handleClick(tipo: TipoPost | null) {
+    setTipo(tipo);
+    setMenuAbierto(false);
+    navigate('/feed');
+  }
 
   return (
     <>
@@ -31,10 +39,7 @@ export function BottomNav() {
         {NAV_ITEMS.map(({ Icon, label, key, tipo }) => (
           <button
             key={key}
-            onClick={() => {
-              setTipo(tipo);
-              setMenuAbierto(false);
-            }}
+            onClick={() => handleClick(tipo)}
             className={`flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1.5 text-xs font-medium transition ${
               tipoActivo === tipo ? 'text-verde' : 'text-tinta/50'
             }`}
