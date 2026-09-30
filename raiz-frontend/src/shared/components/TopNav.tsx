@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { FiHome, FiMessageCircle } from 'react-icons/fi';
 import { FaHandshake, FaHandsHelping, FaHandHoldingHeart } from 'react-icons/fa';
 import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
@@ -14,13 +15,19 @@ const NAV_ITEMS: { Icon: React.ComponentType<{ className?: string }>; label: str
 export function TopNav() {
   const tipoActivo = useCategoryFilterStore((state) => state.tipo);
   const setTipo = useCategoryFilterStore((state) => state.setTipo);
+  const navigate = useNavigate();
+
+  function handleClick(tipo: TipoPost | null) {
+    setTipo(tipo);
+    navigate('/feed');
+  }
 
   return (
     <nav className="hidden justify-center gap-1 border-b border-arcilla bg-papel px-4 md:flex">
       {NAV_ITEMS.map(({ Icon, label, key, tipo }) => (
         <button
           key={key}
-          onClick={() => setTipo(tipo)}
+          onClick={() => handleClick(tipo)}
           className={`flex flex-col items-center gap-0.5 border-b-2 px-4 py-2.5 text-xs font-medium transition ${
             tipoActivo === tipo
               ? 'border-verde text-verde'
