@@ -50,6 +50,26 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
         aria-hidden="true"
       />
       <div className="fixed inset-x-0 bottom-16 z-50 rounded-t-2xl border-t border-arcilla bg-papel p-3 shadow-lg md:hidden">
+        {user && (
+          <Link
+            to={`/perfil/${user._id}`}
+            onClick={onClose}
+            className="mb-2 flex items-center gap-3 rounded-xl border border-arcilla bg-white/60 px-3 py-2.5 hover:bg-white/80"
+          >
+            {user.fotoUrl ? (
+              <img src={user.fotoUrl} alt={user.nombre} className="h-9 w-9 rounded-full object-cover" />
+            ) : (
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-verde/15 text-sm font-semibold text-verde">
+                {user.nombre.charAt(0).toUpperCase()}
+              </span>
+            )}
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-tinta">{user.nombre}</span>
+              <span className="text-xs text-tinta/50">Ver mi perfil</span>
+            </div>
+          </Link>
+        )}
+
         <div className="grid grid-cols-3 gap-2">
           {FILTER_ITEMS.map((item) => (
             <button
@@ -57,6 +77,7 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
               onClick={() => {
                 setTipo(item.tipo);
                 onClose();
+                navigate('/feed');
               }}
               className="flex flex-col items-center gap-1 rounded-xl px-2 py-3 text-xs font-medium text-tinta/70 hover:bg-arcilla/30"
             >
