@@ -12,7 +12,7 @@ export function RegisterForm() {
   return (
     <>
       <p className="mb-2 font-body text-sm font-medium uppercase tracking-wide text-verde">
-        Raíz · Felipe Carrillo Puerto
+        Raíz
       </p>
       <h1 className="mb-2 font-display text-3xl text-tinta sm:text-4xl">Crea tu cuenta</h1>
       <p className="mb-8 font-body text-sm text-tinta/60">
