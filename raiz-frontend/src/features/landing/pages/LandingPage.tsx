@@ -42,11 +42,6 @@ export function LandingPage() {
         {/* Hero */}
         <section className="relative mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 md:items-center md:py-24">
           <div style={{ animation: 'fade-in-up 0.6s ease-out both' }}>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-ocre/40 bg-ocre/10 px-4 py-1.5">
-              <span className="h-2 w-2 rounded-full bg-ocre" style={{ animation: 'pulse-dot 1.8s ease-in-out infinite' }} />
-              <span className="text-xs font-semibold uppercase tracking-wide text-ocre">Fase beta</span>
-            </div>
-
             <h1 className="font-display text-5xl font-bold leading-[1.05] text-papel md:text-6xl">
               Donde la cultura echa <span className="text-ocre">raíces</span>.
             </h1>
@@ -81,11 +76,11 @@ export function LandingPage() {
             </div>
           )}
         </section>
-      </div>
 
-      <footer className="border-t border-arcilla bg-papel py-8 text-center text-xs text-tinta/40">
-        Hecho con cariño en Felipe Carrillo Puerto, Quintana Roo
-      </footer>
+         <footer className="py-8 text-center text-xs text-white">
+          Desarrollado por Grupo Tecnológico de la Rivera - GRUTEC
+         </footer>
+      </div>
     </div>
   );
 }
