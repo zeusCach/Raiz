@@ -35,7 +35,7 @@ export async function requireAuth(
     }
 
     const payload = jwt.verify(token, env.jwtSecret) as { sub: string };
-    const user = await User.findById(payload.sub).select('nombre email siguiendo fotoUrl bannerUrl bio formacion intereses');
+    const user = await User.findById(payload.sub).select('nombre email siguiendo guardados fotoUrl bannerUrl bio formacion intereses');
     if (!user) {
       res.status(401).json({ message: "No autenticado" });
       return;
