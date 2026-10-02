@@ -250,3 +250,30 @@ export async function sugeridos(req: Request, res: Response, next: NextFunction)
 
   }
 }
+
+export async function guardarPost(req: Request, res: Response, next: NextFunction) {
+  try {
+    const guardados = await authService.guardarPost(req.user!._id, String(req.params.postId));
+    res.json({ guardados });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function quitarGuardado(req: Request, res: Response, next: NextFunction) {
+  try {
+    const guardados = await authService.quitarGuardado(req.user!._id, String(req.params.postId));
+    res.json({ guardados });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function guardados(req: Request, res: Response, next: NextFunction) {
+  try {
+    const posts = await authService.obtenerGuardados(req.user!._id);
+    res.json(posts);
+  } catch (error) {
+    next(error);
+  }
+}

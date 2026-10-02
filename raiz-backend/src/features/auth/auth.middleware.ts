@@ -1,4 +1,3 @@
-// src/shared/middlewares/auth.middleware.ts — el select y el tipo de req.user cambian
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../../shared/config/env";
@@ -12,6 +11,7 @@ declare global {
         nombre: string;
         email: string;
         siguiendo: string[];
+        guardados: string[];
         fotoUrl: string;
         bannerUrl: string;
         bio: string;
@@ -46,6 +46,7 @@ export async function requireAuth(
       nombre: user.nombre,
       email: user.email,
       siguiendo: user.siguiendo.map((id) => id.toString()),
+      guardados: user.guardados.map((id) => id.toString()),
       fotoUrl: user.fotoUrl,
       bannerUrl: user.bannerUrl,
       bio: user.bio,

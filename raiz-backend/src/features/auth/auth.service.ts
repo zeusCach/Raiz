@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "./auth.model";
 import { env } from "../../shared/config/env";
+import { PostCultura } from "../postCultura/postCultura.model";
 
 // Define el "nivel de seguridad" para encriptar la contraseña (estándar recomendado).
 const SALT_ROUNDS = 10;
@@ -139,4 +140,25 @@ export async function obtenerSugeridos(userId: string, siguiendo: string[]) {
   return User.find({ _id: { $nin: excluidos } })
     .select('nombre createdAt')
     .limit(5);
+}
+
+
+export async function guardarPost(userId: string, postId: string) {
+  await User.findByIdAndUpdate(userId, { $addToSet: { guardados: postId } });
+  const user = await User.findById(userId);
+  return user!.guardados.map((id) => id.toString());
+}
+
+export async function quitarGuardado(userId: string, postId: string) {
+  await User.findByIdAndUpdate(userId, { $pull: { guardados: postId } });
+  const user = await User.findById(userId);
+  return user!.guardados.map((id) => id.toString());
+}
+
+export async function obtenerGuardados(userId: string) {
+  const user = await User.findById(userId).select('guardados');
+  if (!user) {
+    throw new Error('Usuario no encontrado');
+  }
+  return PostCultura.find({ _id: { $in: user.guardados } }).sort({ createdAt: -1 });
 }

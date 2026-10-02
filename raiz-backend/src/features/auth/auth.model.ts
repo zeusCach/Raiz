@@ -11,6 +11,7 @@ const userSchema = new Schema(
     intereses: [{ type: String, default: [] }],
     fotoUrl: { type: String, default: '' },
     bannerUrl: { type: String, default: '' },
+    guardados: [{ type: Schema.Types.ObjectId, ref: 'PostCultura', default: [] }],
   },
   { timestamps: true }
 );
