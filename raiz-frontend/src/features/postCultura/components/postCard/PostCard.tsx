@@ -4,6 +4,7 @@ import { WhatsAppButton } from "../../../whatsapp/components/whatsappButton";
 import type { PostCultura } from "../../types/postCultura.types";
 import { FollowButton } from "../../../profile/components/FollowButton";
 import { FiCalendar, FiUsers } from "react-icons/fi";
+import { SaveButton } from "./SaveButton";
 
 const BADGE_STYLES: Record<PostCultura["tipo"], string> = {
   foro: "bg-[#8B7355]/10 text-[#8B7355]",
@@ -39,11 +40,14 @@ export function PostCard({ post }: { post: PostCultura }) {
             </Link>
           )}
         </div>
-        {post.tipo === "donacion" && post.urgente && (
-          <span className="text-xs font-semibold text-[#B85C38]">
-            ● Urgente
-          </span>
-        )}
+        <div className="flex items-center gap-1.5">
+          {post.tipo === "donacion" && post.urgente && (
+            <span className="text-xs font-semibold text-[#B85C38]">
+              ● Urgente
+            </span>
+          )}
+          <SaveButton postId={post._id} />
+        </div>
       </div>
       {post.imagenUrl && (
         <img

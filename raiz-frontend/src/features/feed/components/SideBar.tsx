@@ -4,7 +4,8 @@ import { FiHeart, FiBookmark, FiBookOpen } from "react-icons/fi";
 import { useAuthStore } from "../../auth/store/authStore";
 
 const OTROS_DESHABILITADOS = [
-  { Icon: FiBookmark, label: 'Guardados', key: 'guardados' },
+  { Icon: FiBookmark, label: "Guardados", key: "guardados" },
+  { Icon: FiBookOpen, label: "Acerca de", key: "acerca" },
   { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
 ];
 
@@ -74,6 +75,13 @@ export function Sidebar() {
           Otros
         </p>
         <nav className="flex flex-col gap-1">
+          <Link
+            to="/guardados"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/70 hover:bg-arcilla/40"
+          >
+            <FiBookmark className="h-4 w-4" />
+            Guardados
+          </Link>
           <Link
             to="/comunidades"
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/70 hover:bg-arcilla/40"

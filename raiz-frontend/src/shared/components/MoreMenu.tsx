@@ -18,10 +18,10 @@ const FILTER_ITEMS: {
 
 const LINK_ITEMS = [
   { Icon: FiHeart, label: 'Comunidades', key: 'comunidades', to: '/comunidades' },
+  { Icon: FiBookmark, label: 'Guardados', key: 'guardados', to:'/guardados' },
 ];
 
 const DISABLED_ITEMS = [
-  { Icon: FiBookmark, label: 'Guardados', key: 'guardados' },
   { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
 ];
 
