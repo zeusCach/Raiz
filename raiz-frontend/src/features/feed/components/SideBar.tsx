@@ -6,7 +6,6 @@ import { useAuthStore } from "../../auth/store/authStore";
 const OTROS_DESHABILITADOS = [
   { Icon: FiBookmark, label: "Guardados", key: "guardados" },
   { Icon: FiBookOpen, label: "Acerca de", key: "acerca" },
-  { Icon: FiBookOpen, label: 'Acerca de', key: 'acerca' },
 ];
 
 export function Sidebar() {
