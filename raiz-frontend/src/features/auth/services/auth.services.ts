@@ -8,6 +8,7 @@ export interface AuthUser {
   nombre: string;
   email: string;
   siguiendo: string[];
+  guardados: string[];
   bio: string;
   formacion: string;
   intereses: string[];
@@ -159,4 +160,30 @@ export async function fetchSugeridos(): Promise<UsuarioSugerido[]> {
 
   //devolvemos los usuarios sugeridos
   return usuarios;
+}
+
+export async function fetchGuardados(): Promise<import('../../postCultura/types/postCultura.types').PostCultura[]> {
+  const res = await fetch(`${API_URL}/auth/guardados`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Error al obtener los guardados');
+  return res.json();
+}
+
+export async function guardarPost(postId: string): Promise<string[]> {
+  const res = await fetch(`${API_URL}/auth/posts/${postId}/guardar`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('No se pudo guardar el post');
+  const { guardados } = await res.json();
+  return guardados;
+}
+
+export async function quitarGuardado(postId: string): Promise<string[]> {
+  const res = await fetch(`${API_URL}/auth/posts/${postId}/quitar-guardado`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('No se pudo quitar de guardados');
+  const { guardados } = await res.json();
+  return guardados;
 }
