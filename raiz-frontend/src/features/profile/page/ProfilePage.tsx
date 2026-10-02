@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaGraduationCap } from 'react-icons/fa';
-import { FiImage } from 'react-icons/fi';
-import { useProfile } from '../hooks/useProfile';
-import { FollowButton } from '../components/FollowButton';
-import { AvatarUploader } from '../components/AvatarUploader';
-import { BannerPicker } from '../components/BannerPicker';
-import { PostCard } from '../../postCultura/components/postCard/PostCard';
-import { useAuthStore } from '../../auth/store/authStore';
-import { actualizarMiPerfil } from '../../auth/services/auth.services';
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { FaGraduationCap } from "react-icons/fa";
+import { FiImage } from "react-icons/fi";
+import { useProfile } from "../hooks/useProfile";
+import { FollowButton } from "../components/FollowButton";
+import { AvatarUploader } from "../components/AvatarUploader";
+import { BannerPicker } from "../components/BannerPicker";
+import { PostCard } from "../../postCultura/components/postCard/PostCard";
+import { useAuthStore } from "../../auth/store/authStore";
+import { actualizarMiPerfil } from "../../auth/services/auth.services";
 
 export function ProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -16,11 +16,11 @@ export function ProfilePage() {
   const sessionUser = useAuthStore((state) => state.user);
   const setSessionUser = useAuthStore((state) => state.setUser);
   const [editando, setEditando] = useState(false);
-  const [bio, setBio] = useState('');
-  const [formacion, setFormacion] = useState('');
-  const [intereses, setIntereses] = useState('');
-  const [fotoUrl, setFotoUrl] = useState('');
-  const [bannerUrl, setBannerUrl] = useState('');
+  const [bio, setBio] = useState("");
+  const [formacion, setFormacion] = useState("");
+  const [intereses, setIntereses] = useState("");
+  const [fotoUrl, setFotoUrl] = useState("");
+  const [bannerUrl, setBannerUrl] = useState("");
   const [mostrarBannerPicker, setMostrarBannerPicker] = useState(false);
   const [guardando, setGuardando] = useState(false);
 
@@ -30,7 +30,7 @@ export function ProfilePage() {
     if (!perfil) return;
     setBio(perfil.bio);
     setFormacion(perfil.formacion);
-    setIntereses(perfil.intereses.join(', '));
+    setIntereses(perfil.intereses.join(", "));
     setFotoUrl(perfil.fotoUrl);
     setBannerUrl(perfil.bannerUrl);
     setEditando(true);
@@ -42,11 +42,15 @@ export function ProfilePage() {
       const usuarioActualizado = await actualizarMiPerfil({
         bio,
         formacion,
-        intereses: intereses.split(',').map((i) => i.trim()).filter(Boolean),
+        intereses: intereses
+          .split(",")
+          .map((i) => i.trim())
+          .filter(Boolean),
         fotoUrl,
         bannerUrl,
       });
-      if (sessionUser) setSessionUser({ ...sessionUser, ...usuarioActualizado });
+      if (sessionUser)
+        setSessionUser({ ...sessionUser, ...usuarioActualizado });
       setEditando(false);
       refetch();
     } finally {
@@ -55,21 +59,24 @@ export function ProfilePage() {
   }
 
   if (loading) {
-    return <div className="px-4 py-8 text-center text-tinta/50 md:px-8">Cargando perfil...</div>;
+    return (
+      <div className="px-4 py-8 text-center text-tinta/50 md:px-8">
+        Cargando perfil...
+      </div>
+    );
   }
 
   if (error || !perfil) {
     return (
       <div className="px-4 py-8 text-center text-terracota md:px-8">
-        {error ?? 'Perfil no encontrado.'}
+        {error ?? "Perfil no encontrado."}
       </div>
     );
   }
 
-    return (
+  return (
     <main className="mx-auto max-w-2xl px-4 py-6 md:px-8">
       <div className="overflow-hidden rounded-2xl border border-arcilla bg-white/60">
-      
         <div className="relative h-28 bg-gradient-to-r from-verde/30 via-ocre/20 to-terracota/20 md:h-36">
           {(editando ? bannerUrl : perfil.bannerUrl) && (
             <img
@@ -81,7 +88,7 @@ export function ProfilePage() {
           {editando && (
             <button
               onClick={() => setMostrarBannerPicker(true)}
-              className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-tinta/60 px-3 py-1.5 text-xs font-medium text-white hover:bg-tinta/80"
+              className="absolute bottom-2 right-2 z-20 flex items-center gap-1.5 rounded-full bg-tinta/60 px-3 py-1.5 text-xs font-medium text-white hover:bg-tinta/80"
             >
               <FiImage className="h-3.5 w-3.5" /> Cambiar banner
             </button>
@@ -91,7 +98,11 @@ export function ProfilePage() {
         <div className="pb-6">
           <div className="relative z-10 -mt-12 flex items-end justify-between md:-mt-14 px-6">
             {editando ? (
-              <AvatarUploader fotoActual={fotoUrl} nombre={perfil.nombre} onChange={setFotoUrl} />
+              <AvatarUploader
+                fotoActual={fotoUrl}
+                nombre={perfil.nombre}
+                onChange={setFotoUrl}
+              />
             ) : perfil.fotoUrl ? (
               <img
                 src={perfil.fotoUrl}
@@ -120,10 +131,13 @@ export function ProfilePage() {
           </div>
 
           <div className="px-6">
-            <h1 className="mt-4 font-display text-2xl font-bold text-tinta">{perfil.nombre}</h1>
+            <h1 className="mt-4 font-display text-2xl font-bold text-tinta">
+              {perfil.nombre}
+            </h1>
 
             <p className="mt-1 text-sm text-tinta/70">
-              {perfil.bio || (esMiPerfil ? 'Agrega una descripción breve sobre ti' : '')}
+              {perfil.bio ||
+                (esMiPerfil ? "Agrega una descripción breve sobre ti" : "")}
             </p>
 
             {perfil.formacion && (
@@ -146,16 +160,17 @@ export function ProfilePage() {
             )}
 
             <p className="mt-3 text-sm text-tinta/50">
-              Miembro desde{' '}
-              {new Date(perfil.createdAt).toLocaleDateString('es-MX', {
-                month: 'long',
-                year: 'numeric',
+              Miembro desde{" "}
+              {new Date(perfil.createdAt).toLocaleDateString("es-MX", {
+                month: "long",
+                year: "numeric",
               })}
             </p>
 
             <p className="mt-2 text-sm font-medium text-tinta/70">
-              {perfil.seguidoresCount} seguidor{perfil.seguidoresCount === 1 ? '' : 'es'} ·{' '}
-              {posts.length} publicaci{posts.length === 1 ? 'ón' : 'ones'}
+              {perfil.seguidoresCount} seguidor
+              {perfil.seguidoresCount === 1 ? "" : "es"} · {posts.length}{" "}
+              publicaci{posts.length === 1 ? "ón" : "ones"}
             </p>
           </div>
         </div>
@@ -163,11 +178,15 @@ export function ProfilePage() {
 
       {editando && (
         <div className="mt-4 rounded-2xl border border-arcilla bg-white/60 p-5">
-          <h3 className="font-display text-base font-semibold text-tinta">Editar perfil</h3>
+          <h3 className="font-display text-base font-semibold text-tinta">
+            Editar perfil
+          </h3>
 
           <div className="mt-4 flex flex-col gap-3">
             <div>
-              <label className="text-sm font-medium text-tinta">Descripción breve</label>
+              <label className="text-sm font-medium text-tinta">
+                Descripción breve
+              </label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -178,7 +197,9 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-tinta">Formación académica</label>
+              <label className="text-sm font-medium text-tinta">
+                Formación académica
+              </label>
               <input
                 value={formacion}
                 onChange={(e) => setFormacion(e.target.value)}
@@ -188,7 +209,9 @@ export function ProfilePage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-tinta">Intereses (separados por coma)</label>
+              <label className="text-sm font-medium text-tinta">
+                Intereses (separados por coma)
+              </label>
               <input
                 value={intereses}
                 onChange={(e) => setIntereses(e.target.value)}
@@ -218,9 +241,7 @@ export function ProfilePage() {
 
       <div className="mt-6 flex flex-col gap-4">
         {posts.length > 0 ? (
-          posts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))
+          posts.map((post) => <PostCard key={post._id} post={post} />)
         ) : (
           <div className="rounded-2xl border border-arcilla bg-white/40 p-6 text-center text-sm text-tinta/50">
             No hay publicaciones todavía.
@@ -236,5 +257,4 @@ export function ProfilePage() {
       )}
     </main>
   );
-
 }
