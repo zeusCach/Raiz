@@ -78,7 +78,7 @@ export function LandingPage() {
         </section>
 
          <footer className="py-8 text-center text-xs text-white">
-          Desarrollado por Grupo Tecnológico de la Rivera - GRUTEC
+          Desarrollado por Grupo Tecnológico de la Riviera - GRUTEC
          </footer>
       </div>
     </div>
