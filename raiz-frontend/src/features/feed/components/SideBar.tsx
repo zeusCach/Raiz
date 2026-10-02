@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 import { FaGraduationCap } from "react-icons/fa";
-import { FiHeart, FiBookmark, FiBookOpen } from "react-icons/fi";
+import { FiHeart, FiBookmark} from "react-icons/fi";
 import { useAuthStore } from "../../auth/store/authStore";
 
-const OTROS_DESHABILITADOS = [
-  { Icon: FiBookmark, label: "Guardados", key: "guardados" },
-  { Icon: FiBookOpen, label: "Acerca de", key: "acerca" },
-];
+
 
 export function Sidebar() {
   const user = useAuthStore((state) => state.user);
@@ -88,20 +85,6 @@ export function Sidebar() {
             <FiHeart className="h-4 w-4" />
             Comunidades
           </Link>
-          {OTROS_DESHABILITADOS.map(({ Icon, label, key }) => (
-            <button
-              key={key}
-              disabled
-              title="Próximamente"
-              className="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-tinta/30"
-            >
-              <Icon className="h-4 w-4 opacity-50" />
-              {label}
-              <span className="ml-auto text-[10px] uppercase tracking-wide text-tinta/30">
-                Pronto
-              </span>
-            </button>
-          ))}
         </nav>
       </div>
     </aside>
