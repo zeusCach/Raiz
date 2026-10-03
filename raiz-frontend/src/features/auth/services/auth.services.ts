@@ -34,6 +34,11 @@ export interface UsuarioSugerido {
   createdAt: string;
 }
 
+export interface UsuarioBusqueda {
+  _id: string;
+  nombre: string;
+  fotoUrl?: string;
+}
 
 export async function registrarUsuario(data: RegistroFormData): Promise<AuthUser> {
   const res = await fetch(`${API_URL}/auth/registro`, {
@@ -186,4 +191,13 @@ export async function quitarGuardado(postId: string): Promise<string[]> {
   if (!res.ok) throw new Error('No se pudo quitar de guardados');
   const { guardados } = await res.json();
   return guardados;
+}
+
+export async function buscarUsuarios(query: string): Promise<UsuarioBusqueda[]> {
+  const res = await fetch(`${API_URL}/auth/buscar?q=${encodeURIComponent(query)}`, {
+    credentials: 'include',
+  });
+  if (!res.ok) return [];
+  const { usuarios } = await res.json();
+  return usuarios;
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiHome, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiHome, FiMessageCircle, FiMoreHorizontal, FiUsers } from 'react-icons/fi';
 import { FaHandshake } from 'react-icons/fa';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useCategoryFilterStore } from '../../features/feed/store/categoryFilterStore';
@@ -48,6 +48,15 @@ export function BottomNav() {
             {label}
           </button>
         ))}
+
+        <Link
+          to="/personas"
+          onClick={() => setMenuAbierto(false)}
+          className="flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1.5 text-xs font-medium text-tinta/50"
+        >
+          <FiUsers className="h-5 w-5" />
+          Personas
+        </Link>
 
         <button
           onClick={() => setMenuAbierto((v) => !v)}

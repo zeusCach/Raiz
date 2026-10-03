@@ -13,6 +13,7 @@ import { CrearComunidadPage } from "../features/comunidades/page/CrearComunidadP
 import { ComunidadDetailPage } from "../features/comunidades/page/ComunidadDetailPage";
 import { ComunidadPublicarPage } from "../features/comunidades/page/ComunidadPublicarPage";
 import { GuardadosPage } from "../features/postCultura/page/GuardadosPage";
+import { PersonasPage } from "../features/profile/page/PersonasPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -60,4 +61,5 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  { path: 'personas', element: <PersonasPage /> },
 ]);
