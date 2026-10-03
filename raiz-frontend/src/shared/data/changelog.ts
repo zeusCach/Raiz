@@ -1,0 +1,18 @@
+// shared/data/changelog.ts
+export interface ChangelogEntry {
+  version: string;
+  titulo: string;
+  items: string[];
+}
+
+// La entrada más reciente va primero — es la que se muestra en la ventana.
+export const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: '0.6.0',
+    titulo: 'Guardados y notificación de novedades',
+    items: [
+      'Ahora puedes guardar publicaciones para verlas después',
+      'Te avisamos cuando hay algo nuevo en Raíz',
+    ],
+  },
+];

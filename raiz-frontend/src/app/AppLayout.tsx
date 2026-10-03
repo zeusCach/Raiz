@@ -7,6 +7,7 @@ import { useAuthStore } from '../features/auth/store/authStore';
 import { useEffect } from 'react';
 import { fetchUsuarioActual } from '../features/auth/services/auth.services';
 import { TopNav } from '../shared/components/TopNav';
+import { UpdateModal } from '../shared/components/UpdateModal';
 
 export function AppLayout() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -27,6 +28,7 @@ export function AppLayout() {
         </div>
         <RightSidebar />
       </div>
+      <UpdateModal />
       <BottomNav />
     </div>
   );
