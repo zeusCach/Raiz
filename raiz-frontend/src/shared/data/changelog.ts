@@ -12,6 +12,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     titulo: 'Guardados y notificación de novedades',
     items: [
       'Ahora puedes guardar publicaciones para verlas después',
+      'Ahora puedes seguir a tu red, añade amigos, conecta con tu gente',
       'Te avisamos cuando hay algo nuevo en Raíz',
     ],
   },
