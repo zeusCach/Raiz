@@ -8,7 +8,7 @@ export interface ChangelogEntry {
 // La entrada más reciente va primero — es la que se muestra en la ventana.
 export const CHANGELOG: ChangelogEntry[] = [
   {
-    version: '0.6.0',
+    version: '0.6.1',
     titulo: 'Guardados y notificación de novedades',
     items: [
       'Ahora puedes guardar publicaciones para verlas después',
