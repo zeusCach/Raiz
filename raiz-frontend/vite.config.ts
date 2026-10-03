@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'Raíz',
         short_name: 'Raíz',
         description: 'Donde la cultura echa raíces',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        theme_color: '#3D6B42',
+        background_color: '#FBF7EE',
         display: 'standalone', // Hace que se abra como una app nativa sin barra de navegador
         orientation: 'portrait',
         icons: [
