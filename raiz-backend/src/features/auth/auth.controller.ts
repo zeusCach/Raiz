@@ -277,3 +277,17 @@ export async function guardados(req: Request, res: Response, next: NextFunction)
     next(error);
   }
 }
+
+export async function buscar(req: Request, res: Response, next: NextFunction) {
+  try {
+    const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+    if (!q) {
+      res.json({ usuarios: [] });
+      return;
+    }
+    const usuarios = await authService.buscarUsuarios(q, req.user?._id);
+    res.json({ usuarios });
+  } catch (error) {
+    next(error);
+  }
+}

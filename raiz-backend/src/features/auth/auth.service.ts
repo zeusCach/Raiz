@@ -162,3 +162,13 @@ export async function obtenerGuardados(userId: string) {
   }
   return PostCultura.find({ _id: { $in: user.guardados } }).sort({ createdAt: -1 });
 }
+
+export async function buscarUsuarios(query: string, excludeId?: string) {
+  const filter: Record<string, unknown> = {
+    nombre: { $regex: query, $options: 'i' },
+  };
+  if (excludeId) {
+    filter._id = { $ne: excludeId };
+  }
+  return User.find(filter).select('nombre fotoUrl').limit(20);
+}

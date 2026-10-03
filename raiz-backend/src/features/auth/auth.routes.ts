@@ -15,6 +15,7 @@ authRouter.get('/sugeridos', requireAuth, authController.sugeridos);
 authRouter.get('/guardados', requireAuth, authController.guardados);
 authRouter.post('/posts/:postId/guardar', requireAuth, authController.guardarPost);
 authRouter.post('/posts/:postId/quitar-guardado', requireAuth, authController.quitarGuardado);
+authRouter.get('/buscar', authController.buscar);
 authRouter.get('/:id/perfil', authController.perfil);
 authRouter.post('/:id/seguir', requireAuth, authController.seguir);
 authRouter.post('/:id/dejar-de-seguir', requireAuth, authController.dejarDeSeguir);
