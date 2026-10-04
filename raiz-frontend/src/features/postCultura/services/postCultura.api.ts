@@ -45,3 +45,32 @@ export async function createPost(
   if (!res.ok) throw new Error("Error al crear el post");
   return res.json();
 }
+
+
+export async function editarPost(
+  id: string,
+  data: { titulo?: string; descripcion?: string; imagenUrl?: string; ubicacion?: string }
+): Promise<PostCultura> {
+  const res = await fetch(`${API_URL}/posts/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message ?? 'No se pudo editar la publicación');
+  }
+  return res.json();
+}
+
+export async function eliminarPost(id: string): Promise<void> {
+  const res = await fetch(`${API_URL}/posts/${id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message ?? 'No se pudo eliminar la publicación');
+  }
+}
