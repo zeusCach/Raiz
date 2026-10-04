@@ -8,12 +8,12 @@ export interface ChangelogEntry {
 // La entrada más reciente va primero — es la que se muestra en la ventana.
 export const CHANGELOG: ChangelogEntry[] = [
   {
-    version: '0.6.1',
+    version: 'v0.7.0',
     titulo: 'Guardados y notificación de novedades',
     items: [
       'Ahora puedes guardar publicaciones para verlas después',
       'Ahora puedes seguir a tu red, añade amigos, conecta con tu gente',
-      'Te avisamos cuando hay algo nuevo en Raíz',
+      'Ahora puedes editar y eliminar tus post',
     ],
   },
 ];
