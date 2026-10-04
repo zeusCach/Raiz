@@ -1,10 +1,13 @@
-// features/postCultura/components/postCard/PostCard.tsx — reemplaza el archivo completo
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { WhatsAppButton } from "../../../whatsapp/components/whatsappButton";
-import type { PostCultura } from "../../types/postCultura.types";
-import { FollowButton } from "../../../profile/components/FollowButton";
-import { FiCalendar, FiUsers } from "react-icons/fi";
+import { FiCalendar, FiUsers, FiMoreVertical } from "react-icons/fi";
+import { useAuthStore } from "../../../auth/store/authStore";
+import { useDeletePost } from "../../hooks/useDeletePost";
 import { SaveButton } from "./SaveButton";
+import { WhatsAppButton } from "../../../whatsapp/components/whatsappButton";
+import { FollowButton } from "../../../profile/components/FollowButton";
+import { EditPostModal } from "../EditPostModal";
+import type { PostCultura } from "../../types/postCultura.types";
 
 const BADGE_STYLES: Record<PostCultura["tipo"], string> = {
   foro: "bg-[#8B7355]/10 text-[#8B7355]",
@@ -20,7 +23,33 @@ const BADGE_LABEL: Record<PostCultura["tipo"], string> = {
   donacion: "Donación",
 };
 
-export function PostCard({ post }: { post: PostCultura }) {
+interface PostCardProps {
+  post: PostCultura;
+  onDeleted?: (id: string) => void;
+}
+
+export function PostCard({ post: postInicial, onDeleted }: PostCardProps) {
+  const [post, setPost] = useState(postInicial);
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [editando, setEditando] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const { eliminar, loading: eliminando } = useDeletePost();
+
+  // El frontend solo puede inferir "soy el autor" con certeza; el permiso real
+  // de moderador de comunidad se valida siempre en el backend al intentar la acción.
+  const esAutor = user?._id === post.autor._id;
+
+  async function handleEliminar() {
+    if (!confirm('¿Seguro que quieres eliminar esta publicación? Esta acción no se puede deshacer.')) {
+      return;
+    }
+    const exito = await eliminar(post._id);
+    if (exito) {
+      onDeleted?.(post._id);
+    }
+    setMenuAbierto(false);
+  }
+
   return (
     <article className="rounded-2xl border border-[#E8DCC8] bg-[#FAF6EE] p-5 shadow-sm transition hover:shadow-md">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -40,15 +69,46 @@ export function PostCard({ post }: { post: PostCultura }) {
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="relative flex items-center gap-1.5">
           {post.tipo === "donacion" && post.urgente && (
-            <span className="text-xs font-semibold text-[#B85C38]">
-              ● Urgente
-            </span>
+            <span className="text-xs font-semibold text-[#B85C38]">● Urgente</span>
           )}
           <SaveButton postId={post._id} />
+          {user && (
+            <>
+              <button
+                onClick={() => setMenuAbierto((v) => !v)}
+                className="rounded-full p-1.5 text-tinta/40 hover:bg-arcilla/30 hover:text-tinta/70"
+              >
+                <FiMoreVertical className="h-4 w-4" />
+              </button>
+              {menuAbierto && (
+                <div className="absolute right-0 top-8 z-10 w-36 rounded-xl border border-arcilla bg-papel py-1 shadow-lg">
+                  {esAutor && (
+                    <button
+                      onClick={() => {
+                        setEditando(true);
+                        setMenuAbierto(false);
+                      }}
+                      className="block w-full px-3 py-2 text-left text-sm text-tinta hover:bg-arcilla/30"
+                    >
+                      Editar
+                    </button>
+                  )}
+                  <button
+                    onClick={handleEliminar}
+                    disabled={eliminando}
+                    className="block w-full px-3 py-2 text-left text-sm text-terracota hover:bg-arcilla/30 disabled:opacity-50"
+                  >
+                    {eliminando ? 'Eliminando...' : 'Eliminar'}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
+
       {post.imagenUrl && (
         <img
           src={post.imagenUrl}
@@ -69,7 +129,7 @@ export function PostCard({ post }: { post: PostCultura }) {
       )}
       {post.tipo === "colaboracion" && (
         <div className="mt-3 flex flex-wrap gap-1">
-          {post.habilidadesRequeridas.map((h) => (
+          {post.habilidadesRequeridas.map((h: string) => (
             <span
               key={h}
               className="rounded-md bg-[#E8DCC8] px-2 py-0.5 text-xs text-[#3A3226]"
@@ -109,6 +169,14 @@ export function PostCard({ post }: { post: PostCultura }) {
           />
         )}
       </div>
+
+      {editando && (
+        <EditPostModal
+          post={post}
+          onClose={() => setEditando(false)}
+          onUpdated={(actualizado) => setPost(actualizado)}
+        />
+      )}
     </article>
   );
 }

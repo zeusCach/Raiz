@@ -110,3 +110,61 @@ export async function createPost(req: Request, res: Response, next: NextFunction
     next(error);
   }
 }
+
+// Actualiza una publicación existente.
+export async function updatePost(req: Request, res: Response, next: NextFunction) {
+  try {
+    // Verifica si el usuario tiene permiso para modificar la publicación.
+    const puede = await postCulturaService.puedeModificar(String(req.params.id), req.user!._id);
+
+    // Si no tiene permiso, devuelve un error 403.
+    if (!puede) {
+      res.status(403).json({ message: 'No tienes permiso para editar esta publicación' });
+      return;
+    }
+
+    // Actualiza la publicación con los datos recibidos en el cuerpo de la solicitud.
+    const post = await postCulturaService.actualizarPost(String(req.params.id), req.body);
+
+    // Si la publicación no existe, devuelve un error 404.
+    if (!post) {
+      res.status(404).json({ message: 'Publicación no encontrada' });
+      return;
+    }
+
+    // Devuelve la publicación actualizada.
+    res.json(post);
+  } catch (error) {
+    // Envía el error al middleware de manejo de errores.
+    next(error);
+  }
+}
+
+// Elimina una publicación existente.
+export async function deletePost(req: Request, res: Response, next: NextFunction) {
+  try {
+    // Verifica si el usuario tiene permiso para eliminar la publicación.
+    const puede = await postCulturaService.puedeModificar(String(req.params.id), req.user!._id);
+
+    // Si no tiene permiso, devuelve un error 403.
+    if (!puede) {
+      res.status(403).json({ message: 'No tienes permiso para borrar esta publicación' });
+      return;
+    }
+
+    // Elimina la publicación mediante el servicio.
+    const post = await postCulturaService.eliminarPost(String(req.params.id));
+
+    // Si la publicación no existe, devuelve un error 404.
+    if (!post) {
+      res.status(404).json({ message: 'Publicación no encontrada' });
+      return;
+    }
+
+    // Confirma la eliminación con el código 204, sin devolver contenido.
+    res.status(204).send();
+  } catch (error) {
+    // Envía el error al middleware de manejo de errores.
+    next(error);
+  }
+}
