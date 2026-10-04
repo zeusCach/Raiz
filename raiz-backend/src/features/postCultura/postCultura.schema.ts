@@ -39,3 +39,10 @@ export const crearPostSchema = z.discriminatedUnion('tipo', [
     urgente: z.boolean().optional(),
   }),
 ]);
+
+export const editarPostSchema = z.object({
+  titulo: z.string().trim().min(3).max(150).optional(),
+  descripcion: z.string().trim().min(1).max(3000).optional(),
+  imagenUrl: z.string().url('URL de imagen inválida').optional().or(z.literal('')),
+  ubicacion: z.string().trim().max(150).optional(),
+});
