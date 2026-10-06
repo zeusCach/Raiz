@@ -16,6 +16,7 @@ interface PostCulturaBase {
   comunidadNombre?: string;
   createdAt: string;
   updatedAt: string;
+  comunidadCreadorId?: string;
 }
 
 export interface ForoPost extends PostCulturaBase {

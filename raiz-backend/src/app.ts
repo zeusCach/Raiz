@@ -12,7 +12,7 @@ import comunidadRoutes from './features/comunidad/comunidad.routes';
 const app = express();
 
 app.use(cors({ origin: env.clientUrls, credentials: true }));
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
 app.use(cookieParser());
 
 app.get('/api/health', (_req, res) => {

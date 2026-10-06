@@ -3,7 +3,7 @@ import { z } from 'zod';
 const baseFields = {
   titulo: z.string().trim().min(3, 'El título debe tener al menos 3 caracteres').max(150),
   descripcion: z.string().trim().min(1, 'La descripción es obligatoria').max(3000),
-  imagenUrl: z.string().url('URL de imagen inválida').optional().or(z.literal('')),
+  imagenUrl: z.string().max(3_000_000, 'La imagen es demasiado grande').optional().or(z.literal('')),
   ubicacion: z.string().trim().max(150).optional(),
   comunidadId: z.string().optional(),
 };
@@ -43,6 +43,6 @@ export const crearPostSchema = z.discriminatedUnion('tipo', [
 export const editarPostSchema = z.object({
   titulo: z.string().trim().min(3).max(150).optional(),
   descripcion: z.string().trim().min(1).max(3000).optional(),
-  imagenUrl: z.string().url('URL de imagen inválida').optional().or(z.literal('')),
+ imagenUrl: z.string().max(3_000_000, 'La imagen es demasiado grande').optional().or(z.literal('')),
   ubicacion: z.string().trim().max(150).optional(),
 });
