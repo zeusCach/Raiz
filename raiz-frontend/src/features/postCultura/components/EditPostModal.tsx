@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import { useEditPost } from '../hooks/useEditPost';
 import type { PostCultura } from '../types/postCultura.types';
+import { ImageUploader } from './ImageUploader';
 
 interface EditPostModalProps {
   post: PostCultura;
@@ -63,14 +64,8 @@ export function EditPostModal({ post, onClose, onUpdated }: EditPostModalProps) 
             />
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-tinta">Imagen (URL, opcional)</label>
-            <input
-              value={imagenUrl}
-              onChange={(e) => setImagenUrl(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-arcilla bg-white/60 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-verde/40"
-            />
-          </div>
+          
+          <ImageUploader imagenActual={imagenUrl} onChange={(base64) => setImagenUrl(base64 ?? '')} />
 
           <div>
             <label className="text-sm font-medium text-tinta">Ubicación (opcional)</label>

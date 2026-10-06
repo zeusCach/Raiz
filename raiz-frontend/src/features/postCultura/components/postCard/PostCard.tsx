@@ -37,10 +37,18 @@ export function PostCard({ post: postInicial, onDeleted }: PostCardProps) {
 
   // El frontend solo puede inferir "soy el autor" con certeza; el permiso real
   // de moderador de comunidad se valida siempre en el backend al intentar la acción.
+
   const esAutor = user?._id === post.autor._id;
+  const esCreadorComunidad =
+    !!user && !!post.comunidadCreadorId && user._id === post.comunidadCreadorId;
+  const puedeModificar = esAutor || esCreadorComunidad;
 
   async function handleEliminar() {
-    if (!confirm('¿Seguro que quieres eliminar esta publicación? Esta acción no se puede deshacer.')) {
+    if (
+      !confirm(
+        "¿Seguro que quieres eliminar esta publicación? Esta acción no se puede deshacer.",
+      )
+    ) {
       return;
     }
     const exito = await eliminar(post._id);
@@ -71,10 +79,12 @@ export function PostCard({ post: postInicial, onDeleted }: PostCardProps) {
         </div>
         <div className="relative flex items-center gap-1.5">
           {post.tipo === "donacion" && post.urgente && (
-            <span className="text-xs font-semibold text-[#B85C38]">● Urgente</span>
+            <span className="text-xs font-semibold text-[#B85C38]">
+              ● Urgente
+            </span>
           )}
           <SaveButton postId={post._id} />
-          {user && (
+          {user && puedeModificar && (
             <>
               <button
                 onClick={() => setMenuAbierto((v) => !v)}
@@ -100,7 +110,7 @@ export function PostCard({ post: postInicial, onDeleted }: PostCardProps) {
                     disabled={eliminando}
                     className="block w-full px-3 py-2 text-left text-sm text-terracota hover:bg-arcilla/30 disabled:opacity-50"
                   >
-                    {eliminando ? 'Eliminando...' : 'Eliminar'}
+                    {eliminando ? "Eliminando..." : "Eliminar"}
                   </button>
                 </div>
               )}

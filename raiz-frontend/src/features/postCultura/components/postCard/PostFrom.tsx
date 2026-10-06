@@ -10,6 +10,7 @@ import {
   FaHandshake,
   FaHandsHelping,
 } from "react-icons/fa";
+import { ImageUploader } from "../ImageUploader";
 
 const TIPOS: {
   value: TipoPost;
@@ -176,17 +177,7 @@ export function PostForm({ comunidadId }: PostFormProps) {
           />
         </div>
 
-        <div>
-          <label className="text-sm font-medium text-tinta">
-            Imagen (URL, opcional)
-          </label>
-          <input
-            value={imagenUrl}
-            onChange={(e) => setImagenUrl(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-arcilla bg-white/60 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-verde/40"
-            placeholder="https://..."
-          />
-        </div>
+       <ImageUploader imagenActual={imagenUrl} onChange={(base64) => setImagenUrl(base64 ?? '')} />
 
         <div>
           <label className="text-sm font-medium text-tinta">
