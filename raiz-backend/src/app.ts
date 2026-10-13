@@ -7,6 +7,7 @@ import router from './features/postCultura/postCultura.routes';
 import authRouter from './features/auth/auth.routes';
 import cookieParser from 'cookie-parser';
 import comunidadRoutes from './features/comunidad/comunidad.routes';
+import { chatRouter } from './features/chat/chat.routes';
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/posts', router);
 app.use('/api/auth', authRouter);
 app.use('/api/comunidades', comunidadRoutes);
+app.use('/api/chat', chatRouter);
 
 app.use(errorHandler);
 
