@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { fetchUsuarioActual } from '../features/auth/services/auth.services';
 import { TopNav } from '../shared/components/TopNav';
 import { UpdateModal } from '../shared/components/UpdateModal';
+import { ChatWidget } from '../features/chat/components/ChatWidget';
 
 export function AppLayout() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -30,6 +31,7 @@ export function AppLayout() {
       </div>
       <UpdateModal />
       <BottomNav />
+      <ChatWidget/>
     </div>
   );
 }

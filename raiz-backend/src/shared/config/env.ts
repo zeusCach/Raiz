@@ -1,6 +1,5 @@
-
 //archivo de configuracion ts, permite evaluar el acceso de nuestras credenciales .env
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 function requireEnv(key: string): string {
@@ -14,9 +13,20 @@ function requireEnv(key: string): string {
 //objeto env para uso en db, app, server
 export const env = {
   port: process.env.PORT || 3000,
-  mongoUri: requireEnv('MONGO_URI'),
-  clientUrls: (process.env.CLIENT_URLS || 'http://localhost:5173,http://192.168.2.6:5173').split(','),
-  jwtSecret: requireEnv('JWT_SECRET'),
-  nodeEnv: process.env.NODE_ENV || 'production',
+  mongoUri: requireEnv("MONGO_URI"),
+  clientUrls: (
+    process.env.CLIENT_URLS ||
+    "http://localhost:5173,http://192.168.2.6:5173"
+  ).split(","),
+  jwtSecret: requireEnv("JWT_SECRET"),
+  nodeEnv: process.env.NODE_ENV || "production",
+  geminiApiKey: process.env.GEMINI_API_KEY || "",
+  geminiModel: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+  groqApiKey: process.env.GROQ_API_KEY ?? "",
+  groqModel: process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
+  whatsappContacto: process.env.WHATSAPP_CONTACTO || "",
+  geminiEmbeddingModel:
+    process.env.GEMINI_EMBEDDING_MODEL || "gemini-embedding-001",
+  embeddingDims: Number(process.env.EMBEDDING_DIMS) || 768,
+  ragMinScore: Number(process.env.RAG_MIN_SCORE) || 0.65,
 };
-
