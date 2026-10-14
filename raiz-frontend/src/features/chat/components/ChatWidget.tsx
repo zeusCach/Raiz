@@ -58,7 +58,8 @@ export function ChatWidget() {
         <section
           aria-label="Asistente de Raíz"
           onKeyDown={(e) => e.key === 'Escape' && setAbierto(false)}
-          className="fixed bottom-24 right-6 z-50 flex h-[28rem] w-[22rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-arcilla bg-papel shadow-xl"
+          className="fixed right-4 bottom-[calc(max(0.5rem,env(safe-area-inset-bottom))_+_9rem)] z-50 flex h-[28rem] max-h-[calc(100dvh-14rem)] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-arcilla bg-papel shadow-xl md:right-6 md:bottom-24 md:max-h-none md:max-w-[calc(100vw-3rem)]"
+
         >
           <header className="flex items-center justify-between bg-verde px-4 py-3 text-papel">
             <h2 className="font-display text-base font-semibold">Asistente de Raíz</h2>
@@ -123,7 +124,7 @@ export function ChatWidget() {
         onClick={() => setAbierto((v) => !v)}
         aria-label={abierto ? 'Cerrar asistente' : 'Abrir asistente de Raíz'}
         aria-expanded={abierto}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-verde text-papel shadow-lg transition hover:bg-verde-light focus:outline-none focus-visible:ring-4 focus-visible:ring-verde/40"
+        className="fixed right-4 bottom-[calc(max(0.5rem,env(safe-area-inset-bottom))_+_4.5rem)] z-50 flex h-14 w-14 items-center justify-center rounded-full bg-verde text-papel shadow-lg transition hover:bg-verde-light focus:outline-none focus-visible:ring-4 focus-visible:ring-verde/40 md:right-6 md:bottom-6"
       >
         <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current" strokeWidth="2" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" />
