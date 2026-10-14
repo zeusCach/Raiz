@@ -45,11 +45,11 @@ export function MoreMenu({ onClose }: MoreMenuProps) {
   return (
     <>
       <div
-        className="fixed inset-0 z-40 bg-tinta/20 md:hidden"
+        className="fixed inset-0 z-[55] bg-tinta/20 md:hidden"
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="fixed inset-x-0 bottom-16 z-50 rounded-t-2xl border-t border-arcilla bg-papel p-3 shadow-lg md:hidden">
+      <div className="fixed inset-x-0 bottom-16 z-[60] rounded-t-2xl border-t border-arcilla bg-papel p-3 shadow-lg md:hidden">
         {user && (
           <Link
             to={`/perfil/${user._id}`}
